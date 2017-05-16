@@ -1,4 +1,4 @@
 
 public enum Command {
-	SIGN, REMV
+	ADD, SIGN, REMV
 }

@@ -17,6 +17,14 @@ public class Data {
 	
 	@Override
 	public String toString(){
-		return data + arr;
+		return atomic? data : printAr(); 
+	}
+
+	private String printAr() {
+		String ans = "";
+		for (String s : arr) {
+			ans += s;
+		}
+		return ans;
 	}
 }

@@ -8,6 +8,7 @@ public class BCCompiler {
 	private Date last_update; //last compilation
 	
 	public BCCompiler() {
+		//TODO this assumes we only compile once -- not sure????
 		entries = new ArrayList<MainBlockEntry>();
 	}
 	
@@ -34,7 +35,7 @@ public class BCCompiler {
 			entries.add(new MainBlockEntry(e.getData(),e.getKoins()));
 		} else {
 			//duplicate exists, combine instead
-			//entries.get(s).combineDup(); //TODO signature in history.. IMPLEMENT
+			entries.get(s).combineDup(new Pair<byte[], Integer>(e.getSig(), e.getKoins()));
 		}
 	}
 
@@ -52,7 +53,7 @@ public class BCCompiler {
 		if (index > -1) {
 			entries.get(index).removeInvest(e.getSig(), e.getKoins());
 		} else {
-			System.out.print("at compileSign the historyentry has ref index -1 -- this should never happen");
+			System.out.print("at compileRemv the historyentry has ref index -1 -- this should never happen");
 		}
 	}
 

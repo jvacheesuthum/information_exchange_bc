@@ -1,3 +1,4 @@
+import java.security.*;
 
 public class HistoryEntry {
 	
@@ -5,26 +6,40 @@ public class HistoryEntry {
 	private Data d;
 	private int ref; //block reference for remove and sign
 	private int koins; //for ease of use the smallest unit in this system is 1, e.g. no decimal points
-	private String signature;
+	private byte[] signature; //get from sign() function in Signature object
 	
-	public HistoryEntry(Data d, int koins, String signature) { //this constructor is for ADD command
-		this.c = null; //ADD is not included in the Command enum
+	public HistoryEntry(Data d, int koins, PrivateKey priv) { //this constructor is for ADD command
+		this.c = Command.ADD; 
 		this.d = d;
 		this.ref = -1;
 		this.koins = koins;
-		this.signature = signature;
+		this.signature = generateSig(priv);
 
-		//TODO need some way to check if this add already exist -> change to sign instead
 	}
 	
-	public HistoryEntry(Command c, int ref, int koins, String signature) { //for SIGN and REMOVE
+	public HistoryEntry(Command c, int ref, int koins, PrivateKey priv) { //for SIGN and REMOVE
 		this.c = c;
 		this.d = null;
 		this.ref = ref;
 		this.koins = koins;
-		this.signature = signature;
+		this.signature = generateSig(priv);
 	}
 	
+	private byte[] generateSig(PrivateKey priv) {
+		Signature dsa;
+		try {
+			dsa = Signature.getInstance("SHA1withDSA", "SUN");
+			dsa.initSign(priv);
+			String s = this.c + this.d.toString() +this.ref + this.koins; 
+			byte[] toSign = s.getBytes(); //convert this command into bytes to be signed
+			dsa.update(toSign);
+			return dsa.sign();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        return null;
+	}
 	public Command getCommand(){
 		return c;
 	}
@@ -41,7 +56,7 @@ public class HistoryEntry {
 		return koins;
 	}
 	
-	public String getSig() {
+	public byte[] getSig() {
 		return signature;
 	}
 	
