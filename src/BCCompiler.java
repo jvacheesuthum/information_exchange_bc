@@ -14,6 +14,7 @@ public class BCCompiler {
 	
 	//takes a history blockchain and compile into main blockchain
 	public void compile(HistoryBC history) {
+		MainBlockEntry.resetCounter();
 		List<HistoryEntry> h = history.getList();
 		for (HistoryEntry e : h) {
 			switch(e.getCommand()) {
@@ -32,26 +33,36 @@ public class BCCompiler {
 		int s = search(e.getData());
 		if (s == -1) {
 			//no duplicate, continue adding
-			entries.add(new MainBlockEntry(e.getData(),e.getKoins()));
+			entries.add(new MainBlockEntry(e.getData(), 0));
+			entries.get(entries.size() - 1).invest(e.getPub(), e.getSig(), e.getKoins());
 		} else {
-			//duplicate exists, combine instead
-			entries.get(s).combineDup(new Pair<byte[], Integer>(e.getSig(), e.getKoins()));
+			//duplicate exists, SIGN instead
+			entries.get(s).invest(e.getPub(), e.getSig(), e.getKoins());
 		}
 	}
 
 	private void compileSign(HistoryEntry e) {
 		int index = e.getRef();
 		if (index > -1) {
-			entries.get(index).invest(e.getSig(), e.getKoins());
-		} else {
-			System.out.print("at compileSign the historyentry has ref index -1 -- this should never happen");
+				try {
+					entries.get(index).invest(e.getPub(), e.getSig(), e.getKoins());
+				} catch (IndexOutOfBoundsException ex) {
+					System.out.println("this SIGN entry does not match any ref provided (out of bounds): " + e.toString());
+				}
+			} else {
+				System.out.print("at compileSign the historyentry has ref index -1 -- this should never happen");
+			}
 		}
-	}
+	
 
 	private void compileRemv(HistoryEntry e) {
 		int index = e.getRef();
 		if (index > -1) {
-			entries.get(index).removeInvest(e.getSig(), e.getKoins());
+			try {
+				entries.get(index).removeInvest(e.getPub(), e.getKoins());
+			} catch (IndexOutOfBoundsException ex) {
+				System.out.println("this REMV ->>> out of bounds: " + e.toString());
+			}
 		} else {
 			System.out.print("at compileRemv the historyentry has ref index -1 -- this should never happen");
 		}
@@ -59,6 +70,19 @@ public class BCCompiler {
 
 	//search for duplicate entries, return the index if found, and -1 otherwise
 	private int search(Data d){
+		int count = 0;
+		for (MainBlockEntry e : entries) {
+			if(e.getData().toString() == d.toString()) return count;
+			count++;
+		}
 		return -1;
+	}
+
+	public void showState() {
+		System.out.println("last compiled at " + last_update);
+		for (MainBlockEntry e : entries) {
+			System.out.println(e.toString());
+		}
+		
 	}
 }
