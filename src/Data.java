@@ -23,7 +23,7 @@ public class Data {
 	private String printAr() {
 		String ans = "";
 		for (String s : arr) {
-			ans += s;
+			ans += " " + s;
 		}
 		return ans;
 	}

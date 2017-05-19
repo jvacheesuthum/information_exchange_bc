@@ -64,7 +64,7 @@ public class BCCompiler {
 				System.out.println("this REMV ->>> out of bounds: " + e.toString());
 			}
 		} else {
-			System.out.print("at compileRemv the historyentry has ref index -1 -- this should never happen");
+			System.out.println("at compileRemv the historyentry has ref index -1");
 		}
 	}
 

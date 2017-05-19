@@ -21,7 +21,7 @@ public class CommandParser {
 		int ref = -1;
 		int koin = -1;
 		try {
-			ref = Integer.parseInt(split[1].replaceFirst("@@@","").trim());
+			ref = convertRef(split[1]);
 			koin = Integer.parseInt(split[2].trim());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -36,7 +36,7 @@ public class CommandParser {
 		int ref = -1;
 		int koin = -1;
 		try {
-			ref = Integer.parseInt(split[1].replaceFirst("@@@","").trim());
+			ref = convertRef(split[1]);
 			koin = Integer.parseInt(split[2].trim());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,7 +56,7 @@ public class CommandParser {
 		}
 		
 		if(split.length > 3) {
-			d = new Data(java.util.Arrays.copyOfRange(split,1,split.length-2));
+			d = new Data(java.util.Arrays.copyOfRange(split,1,split.length-1));
 		} else {
 			d = new Data(split[1]);
 		}
@@ -65,17 +65,17 @@ public class CommandParser {
 	
 	//returns the index of block referenced (begins with "@@@") otherwise returns -1
 	private static int convertRef(String s){
-		if (s.startsWith("@@@")) {
-			s.replaceFirst("@@@", "");
-			try {
-				Integer.parseInt(s.trim());
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Please provide only integer index after @@@");
-				return -1;
-			}
+		if (s.startsWith("@@@")) s.replaceFirst("@@@", "");
+		int i;
+		try {
+			i = Integer.parseInt(s.trim());
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Please provide only integer index after @@@");
+			return -1;
 		}
-		return -1;
+		
+		return i;
 	}
 
 }
