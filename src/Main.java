@@ -1,13 +1,24 @@
-import java.io.FileOutputStream;
-import java.security.*;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
+import java.io.FileInputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Signature;
 import java.util.Base64;
 import java.util.Scanner;
 
+import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.rio.Rio;
+
+
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		
+		
 		try {
 				
 			// we're generating new KeyPair for every user just for testing, in reality users will
@@ -27,32 +38,18 @@ public class Main {
 	         
 	         System.out.println(Base64.getEncoder().encodeToString(pub.getEncoded()));
 	    
-	         
-
-	         
-	      /* Store Public Key. 
-	 		X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(
-	 				pub.getEncoded());
-	 		FileOutputStream fos = new FileOutputStream("public.txt");
-	 		fos.write(x509EncodedKeySpec.getEncoded());
-	 		fos.close();
-	  
-	 		// Store Private Key.
-	 		PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(
-	 				priv.getEncoded());
-	 		fos = new FileOutputStream("private.txt");
-	 		fos.write(pkcs8EncodedKeySpec.getEncoded());
-	 		fos.close();*/
-			
+	        
 	         
 	         
 			Scanner scanner = new Scanner(System.in);
 			HistoryBC blockchain = HistoryBC.getInstance();
 	
 			while(true){
-				String s;
 				System.out.println("Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' " );
 				System.out.println("OR type 'break' to break OR 'compile' to compile");
+				System.out.println("OR type 'RDF' follow by a spcae and filename to upload an ontology ");
+				
+					String s;
 					s = scanner.nextLine();
 					if (s.contains("break")) {
 						break;
@@ -63,6 +60,25 @@ public class Main {
 						com.compile(blockchain);
 						com.showState();
 						//TODO push the change to server and GraphDB
+					} else if (s.startsWith("RDF")) { 
+						//read an ontology in RDFXML format
+						//right now only invests 1 in each
+						
+						String filename = s.replaceFirst("RDF", "").trim();
+						
+						// read the file 'example-data-artists.ttl' as an InputStream.
+						FileInputStream input = new FileInputStream(filename);
+						
+						// Rio also accepts a java.io.Reader as input for the parser.
+						Model model = Rio.parse(input, "", RDFFormat.RDFXML);
+						for (Statement v : model) {
+							//adding all subj - predicate - obj into the blockchain 1 by 1
+							blockchain.add(CommandParser.parse("ADD " + v.getSubject() + " 1", priv, pub));
+							blockchain.add(CommandParser.parse("ADD " + v.getPredicate() + " 1", priv, pub));
+							blockchain.add(CommandParser.parse("ADD " + v.getObject() + " 1", priv, pub));
+
+						}
+						
 					} else {
 						try {
 							blockchain.add(CommandParser.parse(s, priv, pub));
@@ -75,10 +91,19 @@ public class Main {
 				System.out.println(blockchain.toString());
 				
 			}
+			
+			scanner.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	
 		
+	}
+	
+	//extract resouce name form uri after # 
+	public static String getResourceName(Object o) {
+		String s = o.toString();
+		return s.substring(s.lastIndexOf('#') + 1);
 	}
 	
 	//method to verify signature, move to other class later
