@@ -22,7 +22,9 @@ public class BCCompiler {
 						break;
 			case SIGN : compileSign(e);
 						break;
-			default : compileAdd(e);
+			case ADD : compileAdd(e);
+						break;
+			default: System.out.println("at compile() getcommand cannot retrieve command");
 			}
 		}
 		last_update = new Date();
@@ -72,7 +74,7 @@ public class BCCompiler {
 	private int search(Data d){
 		int count = 0;
 		for (MainBlockEntry e : entries) {
-			if(e.getData().toString() == d.toString()) return count;
+			if(e.getData().toString().equals(d.toString())) return count;
 			count++;
 		}
 		return -1;

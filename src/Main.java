@@ -71,11 +71,14 @@ public class Main {
 						
 						// Rio also accepts a java.io.Reader as input for the parser.
 						Model model = Rio.parse(input, "", RDFFormat.RDFXML);
+						int a = 1;
 						for (Statement v : model) {
+							a++;
 							//adding all subj - predicate - obj into the blockchain 1 by 1
-							blockchain.add(CommandParser.parse("ADD " + v.getSubject() + " 1", priv, pub));
-							blockchain.add(CommandParser.parse("ADD " + v.getPredicate() + " 1", priv, pub));
-							blockchain.add(CommandParser.parse("ADD " + v.getObject() + " 1", priv, pub));
+							blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " 1", priv, pub));
+							blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getPredicate()) + " 1", priv, pub));
+							blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getObject()) + " 1", priv, pub));
+							if (a == 30) break;
 
 						}
 						
