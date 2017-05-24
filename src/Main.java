@@ -1,24 +1,33 @@
 import java.io.FileInputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
 import java.util.Base64;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 
+import com.google.common.base.Stopwatch;
+
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
+		int koins = 0;
+		Stopwatch st = Stopwatch.createStarted();
+		koins = mineKoins("teststring",koins, 50);
+		st.stop();
+		System.out.println("mining " + koins + " koins took " + st.elapsed(TimeUnit.MILLISECONDS));
 		
-		
+		/*
 		try {
 				
 			// we're generating new KeyPair for every user just for testing, in reality users will
@@ -74,11 +83,12 @@ public class Main {
 						int a = 1;
 						for (Statement v : model) {
 							a++;
+							if (a == 60 ) break;
 							//adding all subj - predicate - obj into the blockchain 1 by 1
 							blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " 1", priv, pub));
 							blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getPredicate()) + " 1", priv, pub));
 							blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getObject()) + " 1", priv, pub));
-							if (a == 30) break;
+							//TODO change to URI adding? and add the relationships between them?
 
 						}
 						
@@ -100,7 +110,7 @@ public class Main {
 			e.printStackTrace();
 		}
 	
-		
+		*/
 	}
 	
 	//extract resouce name form uri after # 
@@ -120,6 +130,19 @@ public class Main {
         	e.printStackTrace();
         }
 		return false;
+	}
+	
+	//function that executes and mint hashcashes in order to accumulate koins for users
+	//returns the new current no of koins
+	public static int mineKoins(String string, int currentKoins, int koinsToBeMined) throws NoSuchAlgorithmException {
+		int level = 7;
+		for (int i = 0; i < koinsToBeMined && level < 27; i++) { //if level is ~30 it takes too long
+			HashCash h = HashCash.mintCash(string, level);
+			//increase the level every 5 koins mined to slowdown process
+			if (i % 5 == 0) level ++; 
+			currentKoins++;
+		}
+		return currentKoins;
 	}
 	
 }
