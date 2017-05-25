@@ -70,6 +70,10 @@ public class MainBlockEntry {
 		return data;
 	}
 	
+	public int getIndex() {
+		return index;
+	}
+	
 	//iterate through investments and search for match in publickey ONLY, return index if found, -1 otherwise
 	private int searchPub(byte[] needle) {
 		int count = 0;
@@ -98,6 +102,8 @@ public class MainBlockEntry {
 		}
 		return result;
 	}
+
+
 
 	
 }
