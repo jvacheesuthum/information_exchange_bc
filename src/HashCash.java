@@ -4,6 +4,10 @@
 //  Please see the spec at: http://www.hashcash.org/
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Stopwatch;
+
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -477,4 +481,31 @@ private static long bytesToLong(byte[] b) {
       
       return Integer.valueOf(getValue()).compareTo(Integer.valueOf(other.getValue()));
   }
+  
+/*--------------------------------------------------------------------------------------------------
+ * ---------------------DEFINED FUNCTIONS FOR MINIGN AND TESTING------------------------------
+ -------------------------------------------------------------------------------------------------*/
+	//function that executes and mint hashcashes in order to accumulate koins for users
+	//returns the new current no of koins
+	public static int mineKoins(String string, int currentKoins, int koinsToBeMined) throws NoSuchAlgorithmException {
+		int level = 4;
+		for (int i = 0; i < koinsToBeMined && level < 27; i++) { //if level is ~30 it takes too long for testing purposes
+			HashCash h = HashCash.mintCash(string, level);
+			//increase the level every x koins mined to slowdown process
+			if (i % 3 == 0) level ++; 
+			currentKoins++;
+			System.out.println(currentKoins + "at level " + level + " STAMP= " + h);
+		}
+		return currentKoins;
+	}
+	
+	//use for testing the speed - param is the no of koins we want to mine
+	public void testMining(int mine) throws NoSuchAlgorithmException {
+		int koins = 0;
+		Stopwatch st = Stopwatch.createStarted();
+		koins = mineKoins("teststring",koins, mine);
+		st.stop();
+		System.out.println("mining " + koins + " koins took millisec: " + st.elapsed(TimeUnit.MILLISECONDS));
+	}
+	
 }
