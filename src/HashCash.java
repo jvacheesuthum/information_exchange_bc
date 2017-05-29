@@ -11,7 +11,8 @@ import com.google.common.base.Stopwatch;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.security.NoSuchAlgorithmException; 
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey; 
 
 /**
  * Class for generation and parsing of <a href="http://www.hashcash.org/">HashCash</a><br>
@@ -487,25 +488,28 @@ private static long bytesToLong(byte[] b) {
  -------------------------------------------------------------------------------------------------*/
 	//function that executes and mint hashcashes in order to accumulate koins for users
 	//returns the new current no of koins
-	public static int mineKoins(String string, int currentKoins, int koinsToBeMined) throws NoSuchAlgorithmException {
+    //pass historybc in to add the proof of mining
+	public static int mineKoins(String string, int currentKoins, int koinsToBeMined, HistoryBC blockchain, PublicKey pub) throws NoSuchAlgorithmException {
 		int level = 4;
 		for (int i = 0; i < koinsToBeMined && level < 27; i++) { //if level is ~30 it takes too long for testing purposes
 			HashCash h = HashCash.mintCash(string, level);
 			//increase the level every x koins mined to slowdown process
 			if (i % 3 == 0) level ++; 
 			currentKoins++;
+			//add to history blockchain
+			blockchain.add(new HistoryEntry(pub + " mined with stamp: " + h.toString()));
 			System.out.println(currentKoins + "at level " + level + " STAMP= " + h);
 		}
 		return currentKoins;
 	}
 	
-	//use for testing the speed - param is the no of koins we want to mine
+	/*/use for testing the speed - param is the no of koins we want to mine
 	public void testMining(int mine) throws NoSuchAlgorithmException {
 		int koins = 0;
 		Stopwatch st = Stopwatch.createStarted();
 		koins = mineKoins("teststring",koins, mine);
 		st.stop();
 		System.out.println("mining " + koins + " koins took millisec: " + st.elapsed(TimeUnit.MILLISECONDS));
-	}
+	}*/
 	
 }

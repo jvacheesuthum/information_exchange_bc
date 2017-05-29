@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileInputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -14,25 +13,10 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Label;
-
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.Transaction;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		
-
-		System.out.println("input no. of koins you would like to accumulate..");
-		Scanner scanner = new Scanner(System.in);
-		int k = Integer.parseInt(scanner.nextLine());
-		int koins = 0;
-		koins = HashCash.mineKoins("teststring", koins, k);
 
 		try {
 
@@ -59,7 +43,9 @@ public class Main {
 
 			HistoryBC blockchain = HistoryBC.getInstance();
 			BCCompiler com = new BCCompiler();
+			Scanner scanner = new Scanner(System.in);
 
+			int currentKoins = 0;
 			boolean compiled = false;
 
 			while (true) {
@@ -67,6 +53,7 @@ public class Main {
 						"Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
 				System.out.println("OR 'compile' to compile AND 'graph' after compiling to build a graph");
 				System.out.println("OR type 'RDF' follow by a spcae and filename to upload an ontology ");
+				System.out.println("OR \"mine [int]\" to mine koins");
 
 				String s;
 				s = scanner.nextLine();
@@ -79,6 +66,7 @@ public class Main {
 					// put the compiled MainBlocks into neo4j nodes
 					com.genGraph();
 					System.out.println("successfully generated graph for neo4j");
+					break;
 				} else if (s.equals("compile")) {
 					// TODO check for any updates/conflicts in the server first,
 					// merge changes/ or even just add it on it shouldnt matter
@@ -86,6 +74,11 @@ public class Main {
 					com.compile(blockchain);
 					com.showState();
 					// TODO push the change to server and GraphDB
+				} else if (s.startsWith("mine")) {
+					int toMine = Integer.parseInt(s.replaceFirst("mine", "").trim());
+					currentKoins = HashCash.mineKoins("teststring", currentKoins, toMine, blockchain, pub);
+					
+
 				} else if (s.startsWith("RDF")) {
 					// read an ontology in RDFXML format
 					// right now only invests 1 in each
@@ -99,23 +92,23 @@ public class Main {
 					// Rio also accepts a java.io.Reader as input for the
 					// parser.
 					Model model = Rio.parse(input, "", RDFFormat.RDFXML);
-					int a = 1;
+					//int a = 1;
 					for (Statement v : model) {
-						a++;
-						if (a == 60)
-							break;
+						//a++;
+						//if (a == 60)
+						//	break;
 						// adding all subj - predicate - obj into the blockchain
 						// 1 by 1
-						// blockchain.add(CommandParser.parse("ADD " +
-						// getResourceName(v.getSubject()) + " 1", priv, pub));
-						// blockchain.add(CommandParser.parse("ADD " +
-						// getResourceName(v.getPredicate()) + " 1", priv,
-						// pub));
-						// blockchain.add(CommandParser.parse("ADD " +
-						// getResourceName(v.getObject()) + " 1", priv, pub));
-						blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " "
-								+ getResourceName(v.getPredicate()) + " " + getResourceName(v.getObject()) + " 1", priv,
-								pub));
+						 blockchain.add(CommandParser.parse("ADD " +
+						 getResourceName(v.getSubject()) + " 1", priv, pub));
+						 blockchain.add(CommandParser.parse("ADD " +
+						 getResourceName(v.getPredicate()) + " 1", priv,
+						 pub));
+						 blockchain.add(CommandParser.parse("ADD " +
+						 getResourceName(v.getObject()) + " 1", priv, pub));
+						//blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " "
+							//	+ getResourceName(v.getPredicate()) + " " + getResourceName(v.getObject()) + " 1", priv,
+								//pub));
 						// TODO change to URI adding? and add the relationships
 						// between them?
 

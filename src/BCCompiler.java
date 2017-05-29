@@ -36,6 +36,9 @@ public class BCCompiler {
 			case ADD:
 				compileAdd(e);
 				break;
+			case MINED:
+				entries.add(new MainBlockEntry(e.getData()));
+				break;
 			default:
 				System.out.println("at compile() getcommand cannot retrieve command");
 			}
@@ -110,25 +113,31 @@ public class BCCompiler {
 			for (MainBlockEntry entry : entries) {
 				//create new node and set no. of koins as property for each entries
 				Node node = db.createNode(Label.label(entry.getData().toString()));
+				//TODO change the label to be the data, right now it is displaying the no of koins
 				node.setProperty("index", entry.getIndex());
-				node.setProperty("total Koins invested", entry.getTotalKoins());
 				
-				//turn investments into array of string which is an allowed type of property
-				List<Inv> invs = (List<Inv>) entry.getInvestments();
-				String[] investors = new String[invs.size()];
-				int count = 0;
-				for (Inv i : invs) {
-					investors[count] = i.getPub() + " with " + i.getKoins() + " Koins";
-					count++;
+				if (!entry.getData().toString().contains("mined with stamp")) {
+					node.setProperty("total Koins invested", entry.getTotalKoins());
+					
+					//turn investments into array of string which is an allowed type of property
+					List<Inv> invs = (List<Inv>) entry.getInvestments();
+					String[] investors = new String[invs.size()];
+					int count = 0;
+					for (Inv i : invs) {
+						investors[count] = i.getPub() + " with " + i.getKoins() + " Koins";
+						count++;
+					}
+					node.setProperty("investors", investors);
+				} else {
+					node.setProperty("PoW", entry.getData().toString());
 				}
-				node.setProperty("investors", investors);
 
 				//TODO add relationship?
 				//Relationship relationship = javaNode.createRelationshipTo(scalaNode,
 					//	TutorialRelationships.JVM_LANGIAGES);
 				
-
-			}
+				}
+			
 			tx.success();
 
 		}

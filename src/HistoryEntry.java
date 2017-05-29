@@ -29,6 +29,12 @@ public class HistoryEntry {
 		this.pubkey = pub;
 	}
 	
+	//proof of mining (for every 1 koin hence there's no no of koins
+	public HistoryEntry(String hashcashStamp) {
+		this.c = Command.MINED;
+		this.d = new Data(hashcashStamp);
+	}
+	
 	private byte[] generateSig(PrivateKey priv) {
 		Signature dsa;
 		try {

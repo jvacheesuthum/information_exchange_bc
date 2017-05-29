@@ -21,6 +21,13 @@ public class MainBlockEntry {
 		counter++;
 	}
 	
+	//for proof of mining
+	public MainBlockEntry(Data hashcashStamp) {
+		this.data = hashcashStamp;
+		this.index = counter;
+		counter++;
+	}
+	
 	public void invest(byte[] pub, byte[] sig, int koins) {
 		totalKoins += koins;
 		investments.add(new Inv(pub, sig, koins));
@@ -95,6 +102,9 @@ public class MainBlockEntry {
 	
 	@Override
 	public String toString(){
+		if (data.toString().contains("mined with stamp")) {
+			return "At index: " + index + "  " +data.toString() ;
+		}
 		String result = "At index: " + index + " data = " +data.toString() + " koins: " + totalKoins + '\n';
 		for (Inv p : investments) {
 			//TODO after encoding to string it's very long -> find a way to shorten
