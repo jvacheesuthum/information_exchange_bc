@@ -757,3 +757,40 @@ Storage files: (filename : modification date - size)
 2017-05-29 13:59:52.266+0000 INFO [o.n.k.i.DiagnosticsManager] --- SERVER STARTED END ---
 2017-05-29 14:00:37.565+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 6772ms.
 2017-05-29 14:00:43.552+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 4913ms.
+2017-05-29 14:01:41.199+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:01:51.300+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:02:01.400+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:02:11.501+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:02:21.601+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:02:31.702+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:02:41.802+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:02:51.903+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:03:02.003+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:03:12.104+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:03:22.205+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:03:32.305+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:03:42.406+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:03:52.506+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:04:02.607+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:04:12.707+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:04:22.808+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:04:32.908+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:04:43.009+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:04:53.109+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:05:03.210+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:05:13.311+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:05:23.411+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:05:33.512+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 10000ms.
+2017-05-29 14:05:35.993+0000 WARN [o.n.k.i.c.MonitorGc] GC Monitor: Application threads blocked for 2380ms.
+2017-05-29 14:06:22.087+0000 INFO [o.n.k.i.f.GraphDatabaseFacadeFactory] Shutdown started
+2017-05-29 14:06:22.087+0000 INFO [o.n.k.i.f.GraphDatabaseFacadeFactory] Database is now unavailable
+2017-05-29 14:06:22.089+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by database shutdown [8]:  Starting check pointing...
+2017-05-29 14:06:22.089+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by database shutdown [8]:  Starting store flush...
+2017-05-29 14:06:22.090+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by database shutdown [8]:  Store flush completed
+2017-05-29 14:06:22.090+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by database shutdown [8]:  Starting appending check point entry into the tx log...
+2017-05-29 14:06:22.090+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by database shutdown [8]:  Appending check point entry into the tx log completed
+2017-05-29 14:06:22.090+0000 INFO [o.n.k.i.t.l.c.CheckPointerImpl] Check Pointing triggered by database shutdown [8]:  Check pointing completed
+2017-05-29 14:06:22.090+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] Log Rotation [0]:  Starting log pruning.
+2017-05-29 14:06:22.090+0000 INFO [o.n.k.i.t.l.p.LogPruningImpl] Log Rotation [0]:  Log pruning complete.
+2017-05-29 14:06:22.101+0000 INFO [o.n.k.i.DiagnosticsManager] --- STOPPING diagnostics START ---
+2017-05-29 14:06:22.101+0000 INFO [o.n.k.i.DiagnosticsManager] --- STOPPING diagnostics END ---

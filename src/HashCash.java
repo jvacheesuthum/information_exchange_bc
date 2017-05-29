@@ -497,7 +497,7 @@ private static long bytesToLong(byte[] b) {
 			if (i % 3 == 0) level ++; 
 			currentKoins++;
 			//add to history blockchain
-			blockchain.add(new HistoryEntry(pub + " mined with stamp: " + h.toString()));
+			blockchain.add(new HistoryEntry(pub.getEncoded() + " mined with stamp: " + h.toString()));
 			System.out.println(currentKoins + "at level " + level + " STAMP= " + h);
 		}
 		return currentKoins;
