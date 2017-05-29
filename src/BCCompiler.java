@@ -37,7 +37,7 @@ public class BCCompiler {
 				compileAdd(e);
 				break;
 			case MINED:
-				entries.add(new MainBlockEntry(e.getData()));
+				entries.add(new MainBlockEntry(e.getPubkey(), e.getData()));
 				break;
 			default:
 				System.out.println("at compile() getcommand cannot retrieve command");
@@ -105,7 +105,7 @@ public class BCCompiler {
 	}
 
 	public void genGraph() {
-		File filename = new File("Graph "+ last_update + " " + last_update.getTime());
+		File filename = new File("graph\\Graph "+ last_update + " " + last_update.getTime());
 		GraphDatabaseFactory dbFactory = new GraphDatabaseFactory();
 		GraphDatabaseService db = dbFactory.newEmbeddedDatabase(filename);
 		try (Transaction tx = db.beginTx()) {
@@ -116,7 +116,7 @@ public class BCCompiler {
 				//TODO change the label to be the data, right now it is displaying the no of koins
 				node.setProperty("index", entry.getIndex());
 				
-				if (!entry.getData().toString().contains("mined with stamp")) {
+				if (!(entry.getMiner() != null)) {
 					node.setProperty("total Koins invested", entry.getTotalKoins());
 					
 					//turn investments into array of string which is an allowed type of property
@@ -129,7 +129,8 @@ public class BCCompiler {
 					}
 					node.setProperty("investors", investors);
 				} else {
-					node.setProperty("PoW", entry.getData().toString());
+					node.setProperty("PublicKey", entry.getMiner());
+					node.setProperty("STAMP", entry.getData().toString());
 				}
 
 				//TODO add relationship?

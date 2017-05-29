@@ -30,8 +30,9 @@ public class HistoryEntry {
 	}
 	
 	//proof of mining (for every 1 koin hence there's no no of koins
-	public HistoryEntry(String hashcashStamp) {
+	public HistoryEntry(PublicKey pub, String hashcashStamp) {
 		this.c = Command.MINED;
+		this.pubkey = pub;
 		this.d = new Data(hashcashStamp);
 	}
 	
@@ -84,6 +85,11 @@ public class HistoryEntry {
 	public byte[] getPub() {
 		//TODO return pubkey.getEncoded();
 		return Base64.getDecoder().decode("hellotestpubkey");
+	}
+	
+	//for unencoded
+	public PublicKey getPubkey() {
+		return pubkey;
 	}
 	
 }

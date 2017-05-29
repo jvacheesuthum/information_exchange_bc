@@ -1,3 +1,4 @@
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
@@ -6,6 +7,7 @@ import java.util.List;
 
 //TODO main doesnt need sig, maybe publickey instead
 public class MainBlockEntry {
+	private String pubkey; //for mining PoW only
 	private Data data;
 	//this is signature-koins pair, change the type later java.security.signature?????
 	private List<Inv> investments;
@@ -22,7 +24,8 @@ public class MainBlockEntry {
 	}
 	
 	//for proof of mining
-	public MainBlockEntry(Data hashcashStamp) {
+	public MainBlockEntry(PublicKey pub, Data hashcashStamp) {
+		this.pubkey = Base64.getEncoder().encodeToString(pub.getEncoded());
 		this.data = hashcashStamp;
 		this.index = counter;
 		counter++;
@@ -102,7 +105,7 @@ public class MainBlockEntry {
 	
 	@Override
 	public String toString(){
-		if (data.toString().contains("mined with stamp")) {
+		if (pubkey != null) {
 			return "At index: " + index + "  " +data.toString() ;
 		}
 		String result = "At index: " + index + " data = " +data.toString() + " koins: " + totalKoins + '\n';
@@ -111,6 +114,10 @@ public class MainBlockEntry {
 			result += "[ " + (p.getPub()) + " invests " + p.getKoins() + " with signature: " + p.getSig() + " ]\n";
 		}
 		return result;
+	}
+
+	public String getMiner() {
+		return pubkey;
 	}
 
 
