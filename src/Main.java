@@ -20,6 +20,8 @@ public class Main {
 
 		try {
 
+			//priv pub keygen ---------------------------------------------------------------------------------
+
 			// we're generating new KeyPair for every user just for testing, in
 			// reality users will
 			// have to login with their pub-priv key to keep the record of their
@@ -41,6 +43,7 @@ public class Main {
 
 			System.out.println(Base64.getEncoder().encodeToString(pub.getEncoded()));
 
+			//instances -----------------------------------------------------------------------------------
 			HistoryBC blockchain = HistoryBC.getInstance();
 			BCCompiler com = new BCCompiler();
 			Scanner scanner = new Scanner(System.in);
@@ -48,6 +51,7 @@ public class Main {
 			int currentKoins = 0;
 			boolean compiled = false;
 
+			//--------------------------------------------------------------------------------------------
 			while (true) {
 				System.out.println(
 						"Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
@@ -58,6 +62,7 @@ public class Main {
 				String s;
 				s = scanner.nextLine();
 				if (s.equals("graph")) {
+					
 					if (!compiled) {
 						System.out.println("please compile first");
 						continue;
@@ -67,60 +72,46 @@ public class Main {
 					com.genGraph();
 					System.out.println("successfully generated graph for neo4j");
 					break;
+					
 				} else if (s.equals("compile")) {
+					
 					// TODO check for any updates/conflicts in the server first,
 					// merge changes/ or even just add it on it shouldnt matter
 					compiled = true;
 					com.compile(blockchain);
 					com.showState();
 					// TODO push the change to server and GraphDB
+					
 				} else if (s.startsWith("mine")) {
+					
 					int toMine = Integer.parseInt(s.replaceFirst("mine", "").trim());
 					currentKoins = HashCash.mineKoins("teststring", currentKoins, toMine, blockchain, pub);
 					
 
 				} else if (s.startsWith("RDF")) {
-					// read an ontology in RDFXML format
-					// right now only invests 1 in each
+					// read an ontology in RDFXML format and invests 1 in each
 
 					String filename = s.replaceFirst("RDF", "").trim();
-
-					// read the file 'example-data-artists.ttl' as an
-					// InputStream.
 					FileInputStream input = new FileInputStream(filename);
 
-					// Rio also accepts a java.io.Reader as input for the
-					// parser.
 					Model model = Rio.parse(input, "", RDFFormat.RDFXML);
-					//int a = 1;
 					for (Statement v : model) {
-						//a++;
-						//if (a == 60)
-						//	break;
+						//TODO need to change these to URIs?
 						// adding all subj - predicate - obj into the blockchain
-						// 1 by 1
-						 blockchain.add(CommandParser.parse("ADD " +
-						 getResourceName(v.getSubject()) + " 1", priv, pub));
-						 blockchain.add(CommandParser.parse("ADD " +
-						 getResourceName(v.getPredicate()) + " 1", priv,
-						 pub));
-						 blockchain.add(CommandParser.parse("ADD " +
-						 getResourceName(v.getObject()) + " 1", priv, pub));
-						//blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " "
-							//	+ getResourceName(v.getPredicate()) + " " + getResourceName(v.getObject()) + " 1", priv,
-								//pub));
-						// TODO change to URI adding? and add the relationships
-						// between them?
+						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " 1", priv, pub));
+						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getPredicate()) + " 1", priv,pub));
+						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getObject()) + " 1", priv, pub));
+
+						 //add relationships
+						 blockchain.add(new HistoryEntry(getResourceName(v.getSubject()), getResourceName(v.getPredicate())));
+						 blockchain.add(new HistoryEntry(getResourceName(v.getPredicate()), getResourceName(v.getObject())));
 
 					}
 
 				} else {
-					try {
+						// single regular command case -------------------------------------
 						blockchain.add(CommandParser.parse(s, priv, pub));
 
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
 				}
 
 				System.out.println(blockchain.toString());
@@ -132,13 +123,13 @@ public class Main {
 		}
 	}
 
-	// extract resouce name form uri after #
+	// extract resource name form URI after #
 	public static String getResourceName(Object o) {
 		String s = o.toString();
 		return s.substring(s.lastIndexOf('#') + 1);
 	}
 
-	// method to verify signature, move to other class later
+	// method to verify signature, move to other class later??
 	public boolean verifySig(byte[] signature, byte[] data, PublicKey pubKey) {
 		try {
 			Signature sig = Signature.getInstance("SHA1withDSA", "SUN");

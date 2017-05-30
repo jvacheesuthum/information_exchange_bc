@@ -10,6 +10,8 @@ public class HistoryEntry {
 	private byte[] signature; //get from sign() function in Signature object
 	private PublicKey pubkey;
 	
+	private Data secondData; //use for linking only!
+	
 	public HistoryEntry(Data d, int koins, PrivateKey priv, PublicKey pub) { //this constructor is for ADD command
 		this.c = Command.ADD; 
 		this.d = d;
@@ -34,6 +36,13 @@ public class HistoryEntry {
 		this.c = Command.MINED;
 		this.pubkey = pub;
 		this.d = new Data(hashcashStamp);
+	}
+	
+	//for relationships in neo4j - links a with b
+	public HistoryEntry(String a, String b) {
+		this.c = Command.LINK;
+		this.d = new Data(a);
+		this.secondData = new Data(b);
 	}
 	
 	private byte[] generateSig(PrivateKey priv) {
@@ -64,6 +73,10 @@ public class HistoryEntry {
 		return d;
 	}
 	
+	public Data getSecondData() {
+		return secondData;
+	}
+	
 	public int getRef(){
 		return ref;
 	}
@@ -91,5 +104,7 @@ public class HistoryEntry {
 	public PublicKey getPubkey() {
 		return pubkey;
 	}
+
+	
 	
 }

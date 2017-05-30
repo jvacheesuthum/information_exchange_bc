@@ -2,12 +2,14 @@ import java.io.File;
 import java.util.ArrayList;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
@@ -39,11 +41,21 @@ public class BCCompiler {
 			case MINED:
 				entries.add(new MainBlockEntry(e.getPubkey(), e.getData()));
 				break;
+			case LINK:
+				addLink(e);
+				break;
 			default:
 				System.out.println("at compile() getcommand cannot retrieve command");
 			}
 		}
 		last_update = new Date();
+	}
+
+	//add relationship-block into the main block to generate relationship when genGraph()
+	private void addLink(HistoryEntry e) {
+		entries.add(new MainBlockEntry(e.getData(), e.getSecondData()));
+		
+		
 	}
 
 	private void compileAdd(HistoryEntry e) {
@@ -105,39 +117,62 @@ public class BCCompiler {
 	}
 
 	public void genGraph() {
-		File filename = new File("graph\\Graph "+ last_update + " " + last_update.getTime());
+		File filename = new File("Graph "+ last_update + " " + last_update.getTime());
 		GraphDatabaseFactory dbFactory = new GraphDatabaseFactory();
 		GraphDatabaseService db = dbFactory.newEmbeddedDatabase(filename);
 		try (Transaction tx = db.beginTx()) {
 
 			for (MainBlockEntry entry : entries) {
+				if (entry.getSecondData() != null) {
+					
+					//relationship entries -> add
+					
+					int first = search(entry.getData());
+					int second = search(entry.getSecondData());
+					
+					if (first < 0 || second < 0 || first == second) {
+						System.out.println("invalid relationships at gengraph(), should never happen");
+						continue;
+					}
+					
+					Iterator<Node> it = db.findNodes(Label.label(entry.getData().toString()));
+					Iterator<Node> it2 = db.findNodes(Label.label(entry.getSecondData().toString()));
+					it.next().createRelationshipTo(it2.next(), RelationshipType.withName("-"));
+					
+					if(it.hasNext() || it2.hasNext()) {
+						System.out.println("more than 1 matching labels found at gengrah(), should never happen");
+						continue;
+					}
+					
+				} else {
 				//create new node and set no. of koins as property for each entries
 				Node node = db.createNode(Label.label(entry.getData().toString()));
 				//TODO change the label to be the data, right now it is displaying the no of koins
 				node.setProperty("index", entry.getIndex());
 				
-				if (!(entry.getMiner() != null)) {
-					node.setProperty("total Koins invested", entry.getTotalKoins());
-					
-					//turn investments into array of string which is an allowed type of property
-					List<Inv> invs = (List<Inv>) entry.getInvestments();
-					String[] investors = new String[invs.size()];
-					int count = 0;
-					for (Inv i : invs) {
-						investors[count] = i.getPub() + " with " + i.getKoins() + " Koins";
-						count++;
+					if (entry.getMiner() == null) {
+						//not a PoW node, carry on.......
+						node.setProperty("total Koins invested", entry.getTotalKoins());
+						
+						//turn investments into array of string which is an allowed type of property
+						List<Inv> invs = (List<Inv>) entry.getInvestments();
+						String[] investors = new String[invs.size()];
+						int count = 0;
+						for (Inv i : invs) {
+							investors[count] = i.getPub() + " with " + i.getKoins() + " Koins";
+							count++;
+						}
+						node.setProperty("investors", investors);
+					} else {
+						//PoW node-------------------------------------------
+						node.setProperty("PublicKey", entry.getMiner());
+						node.setProperty("STAMP", entry.getData().toString());
 					}
-					node.setProperty("investors", investors);
-				} else {
-					node.setProperty("PublicKey", entry.getMiner());
-					node.setProperty("STAMP", entry.getData().toString());
-				}
 
-				//TODO add relationship?
-				//Relationship relationship = javaNode.createRelationshipTo(scalaNode,
-					//	TutorialRelationships.JVM_LANGIAGES);
+				
 				
 				}
+			}
 			
 			tx.success();
 

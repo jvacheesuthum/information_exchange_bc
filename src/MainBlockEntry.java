@@ -9,6 +9,7 @@ import java.util.List;
 public class MainBlockEntry {
 	private String pubkey; //for mining PoW only
 	private Data data;
+	private Data secondData; //for relationships only
 	//this is signature-koins pair, change the type later java.security.signature?????
 	private List<Inv> investments;
 	private int totalKoins;
@@ -29,6 +30,12 @@ public class MainBlockEntry {
 		this.data = hashcashStamp;
 		this.index = counter;
 		counter++;
+	}
+	
+	//for relationships adding
+	public MainBlockEntry(Data a, Data b) {
+		this.data = a;
+		this.secondData = b;
 	}
 	
 	public void invest(byte[] pub, byte[] sig, int koins) {
@@ -80,9 +87,18 @@ public class MainBlockEntry {
 		return data;
 	}
 	
+	public Data getSecondData() {
+		return secondData;
+	}
+	
 	public int getIndex() {
 		return index;
 	}
+	
+	public String getMiner() {
+		return pubkey;
+	}
+
 	
 	//iterate through investments and search for match in publickey ONLY, return index if found, -1 otherwise
 	private int searchPub(byte[] needle) {
@@ -107,6 +123,8 @@ public class MainBlockEntry {
 	public String toString(){
 		if (pubkey != null) {
 			return "At index: " + index + "  " +data.toString() ;
+		} else if (secondData != null) {
+			return "LINK";
 		}
 		String result = "At index: " + index + " data = " +data.toString() + " koins: " + totalKoins + '\n';
 		for (Inv p : investments) {
@@ -116,9 +134,7 @@ public class MainBlockEntry {
 		return result;
 	}
 
-	public String getMiner() {
-		return pubkey;
-	}
+
 
 
 
