@@ -483,9 +483,10 @@ private static long bytesToLong(byte[] b) {
       return Integer.valueOf(getValue()).compareTo(Integer.valueOf(other.getValue()));
   }
   
-/*--------------------------------------------------------------------------------------------------
- * ---------------------DEFINED FUNCTIONS FOR MINIGN AND TESTING------------------------------
+/**--------------------------------------------------------------------------------------------------
+ * ---------------------DEFINED FUNCTIONS FOR MINING AND TESTING------------------------------
  -------------------------------------------------------------------------------------------------*/
+  
 	//function that executes and mint hashcashes in order to accumulate koins for users
 	//returns the new current no of koins
     //pass historybc in to add the proof of mining
@@ -503,7 +504,7 @@ private static long bytesToLong(byte[] b) {
 		return currentKoins;
 	}
 	
-	/*/use for testing the speed - param is the no of koins we want to mine
+	/**use for testing the speed - param is the no of koins we want to mine
 	public void testMining(int mine) throws NoSuchAlgorithmException {
 		int koins = 0;
 		Stopwatch st = Stopwatch.createStarted();

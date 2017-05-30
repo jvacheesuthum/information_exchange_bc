@@ -30,10 +30,10 @@ public class BCCompiler {
 		for (HistoryEntry e : h) {
 			switch (e.getCommand()) {
 			case REMV:
-				compileRemv(e);
+				compileSignRemv(e);
 				break;
 			case SIGN:
-				compileSign(e);
+				compileSignRemv(e);
 				break;
 			case ADD:
 				compileAdd(e);
@@ -71,20 +71,24 @@ public class BCCompiler {
 		}
 	}
 
-	private void compileSign(HistoryEntry e) {
+	private void compileSignRemv(HistoryEntry e) {
 		int index = e.getRef();
 		if (index > -1) {
 			try {
-				entries.get(index).invest(e.getPub(), e.getSig(), e.getKoins());
+				if (e.getCommand() == Command.SIGN) {
+					entries.get(index).invest(e.getPub(), e.getSig(), e.getKoins());
+				} else { //REMV
+					entries.get(index).removeInvest(e.getPub(), e.getKoins());
+				}
 			} catch (IndexOutOfBoundsException ex) {
-				System.out.println("this SIGN entry does not match any ref provided (out of bounds): " + e.toString());
+				System.out.println("this SIGN/REMV entry does not match any ref provided (out of bounds): " + e.toString());
 			}
 		} else {
-			System.out.print("at compileSign the historyentry has ref index -1 -- this should never happen");
+			System.out.print("at compileSignRemv the historyentry has ref index -1");
 		}
 	}
 
-	private void compileRemv(HistoryEntry e) {
+	/*private void compileRemv(HistoryEntry e) {
 		int index = e.getRef();
 		if (index > -1) {
 			try {
@@ -95,7 +99,8 @@ public class BCCompiler {
 		} else {
 			System.out.println("at compileRemv the historyentry has ref index -1");
 		}
-	}
+	}*/
+	
 
 	// search for duplicate entries, return the index if found, and -1 otherwise
 	private int search(Data d) {

@@ -62,18 +62,6 @@ public class MainBlockEntry {
 		
 	}
 	
-	/*
-	//combine another duplicate of same entry. arg is mainblockentry object or pair
-	public void combineDup(Pair<byte[], Integer> pair) { //TODO this is exactly the same as invest..
-		totalKoins += pair.getR();
-		investments.add(pair);
-	}
-	
-	public void combineDup(MainBlockEntry e) {
-		investments.addAll(e.getInvestments());
-		totalKoins += e.getTotalKoins();
-		
-	}*/
 	
 	public int getTotalKoins(){
 		return totalKoins;

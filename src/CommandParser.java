@@ -9,15 +9,14 @@ public class CommandParser {
 		for (int i=0;i<split.length;i++) {System.out.println(split[i]);}
 		switch(split[0]) {
 		case "ADD": return parseAdd(split, priv, pub);
-		case "SIGN": return parseSign(split, priv, pub);
-		case "REMV":return parseRemv(split, priv, pub);
+		case "SIGN": return parseSignRemv(Command.SIGN, split, priv, pub);
+		case "REMV":return parseSignRemv(Command.REMV, split, priv, pub);
 		default: throw new IllegalArgumentException("Command has to begin with ADD, SIGN or REMV");
 		}
 	}
 
-	//3 split: REMV [ref] [koins]
-	private static HistoryEntry parseRemv(String[] split, PrivateKey priv, PublicKey pub) {
-		if (split.length != 3) throw new IllegalArgumentException("Invalid no of argument for REMV");
+	private static HistoryEntry parseSignRemv(Command c, String[] split, PrivateKey priv, PublicKey pub) {
+		if (split.length != 3) throw new IllegalArgumentException("Invalid no of argument for SIGN, REMV");
 		int ref = -1;
 		int koin = -1;
 		try {
@@ -27,23 +26,9 @@ public class CommandParser {
 			e.printStackTrace();
 		}
 
-		return new HistoryEntry(Command.REMV,ref,koin, priv, pub);
+		return new HistoryEntry(c, ref, koin, priv, pub);
 	}
 
-	//3 split: SIGN [ref] [koins]
-	private static HistoryEntry parseSign(String[] split, PrivateKey priv, PublicKey pub) {
-		if (split.length != 3) throw new IllegalArgumentException("Invalid no of argument for SIGN");
-		int ref = -1;
-		int koin = -1;
-		try {
-			ref = convertRef(split[1]);
-			koin = Integer.parseInt(split[2].trim());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return new HistoryEntry(Command.SIGN,ref,koin, priv, pub); 
-	}
 
 	//3+ split: ADD [array of (ref) and/or (string)] [koins]
 	private static HistoryEntry parseAdd(String[] split, PrivateKey priv, PublicKey pub) {

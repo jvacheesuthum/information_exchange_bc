@@ -25,17 +25,6 @@ public class Main {
 
 			//priv pub keygen ---------------------------------------------------------------------------------
 
-			/* we're generating new KeyPair for every user just for testing, in
-			// reality users will
-			// have to login with their pub-priv key to keep the record of their
-			// koins, etc
-			// we now have infinite number of koins at the moment, there's no
-			// limit
-			// since the PoW will regain the same no of koin spent anyway, in
-			// reality -> another mining function
-			// write details in report
-			 */
-
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 
@@ -70,7 +59,7 @@ public class Main {
 			
 
 			//--------------------------------------------------------------------------------------------
-			while (true) {
+			do {
 				System.out.println("Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
 				System.out.println("OR 'compile' to compile AND 'graph' after compiling to build a graph");
 				System.out.println("OR type 'RDF' follow by a spcae and filename to upload an ontology ");
@@ -138,10 +127,7 @@ public class Main {
 				o.close();
 				f.close();
 
-			}
-
-
-		
+			} while(true);
 		
 	}
 

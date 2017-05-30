@@ -4,9 +4,6 @@ import java.util.List;
 
 public class HistoryBC implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private List<HistoryEntry> entries;
 	private static int count = 0;
