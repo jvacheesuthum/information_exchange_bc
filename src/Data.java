@@ -1,6 +1,11 @@
+import java.io.Serializable;
 
-public class Data {
+public class Data implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean atomic; //determine whether this data is an atomic of an array 
 	private String data; //null if this is an array data
 	private String[] arr; //null if this is atomic, can be refs or string data

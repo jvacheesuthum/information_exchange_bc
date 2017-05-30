@@ -1,8 +1,13 @@
+import java.io.Serializable;
 import java.security.*;
 import java.util.Base64;
 
-public class HistoryEntry {
+public class HistoryEntry implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Command c;
 	private Data d;
 	private int ref; //block reference for remove and sign

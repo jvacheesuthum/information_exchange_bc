@@ -1,4 +1,8 @@
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -41,15 +45,29 @@ public class Main {
 			PrivateKey priv = pair.getPrivate();
 			PublicKey pub = pair.getPublic();
 
-			System.out.println(Base64.getEncoder().encodeToString(pub.getEncoded()));
 
 			//instances -----------------------------------------------------------------------------------
-			HistoryBC blockchain = HistoryBC.getInstance();
+			
+			HistoryBC blockchain;
 			BCCompiler com = new BCCompiler();
-			Scanner scanner = new Scanner(System.in);
 
 			int currentKoins = 0;
 			boolean compiled = false;
+			
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Do you want to load the previous history blockchain? type y if yes");
+			String readBC = scanner.nextLine();
+			
+			
+			if (readBC.equals("y")) {
+					FileInputStream fi = new FileInputStream(new File("history.txt"));
+					ObjectInputStream oi = new ObjectInputStream(fi);
+	
+					blockchain = (HistoryBC) oi.readObject();
+			} else {
+				blockchain = HistoryBC.getInstance();
+			}
+			
 
 			//--------------------------------------------------------------------------------------------
 			while (true) {
@@ -59,8 +77,7 @@ public class Main {
 				System.out.println("OR type 'RDF' follow by a spcae and filename to upload an ontology ");
 				System.out.println("OR \"mine [int]\" to mine koins");
 
-				String s;
-				s = scanner.nextLine();
+				String s = scanner.nextLine();
 				if (s.equals("graph")) {
 					
 					if (!compiled) {
@@ -114,13 +131,23 @@ public class Main {
 
 				}
 
+				//save history blockchain into disk using serializable
+				FileOutputStream f = new FileOutputStream(new File("history.txt"));
+				ObjectOutputStream o = new ObjectOutputStream(f);
+				o.writeObject(blockchain);
+				o.close();
+				f.close();
+
 				System.out.println(blockchain.toString());
 
 			}
 
+			scanner.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	// extract resource name form URI after #
