@@ -94,7 +94,6 @@ public class MainBlockEntry {
 		for (Inv p : investments) {
 
 			if(Base64.getEncoder().encodeToString(needle).equals(Base64.getEncoder().encodeToString(p.getPub()))) {
-				System.out.println("count ======= " + count);
 				return count;
 			}
 			count++;

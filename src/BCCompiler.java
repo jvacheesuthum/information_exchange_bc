@@ -140,20 +140,19 @@ public class BCCompiler {
 						continue;
 					}
 					
-					Iterator<Node> it = db.findNodes(Label.label(entry.getData().toString()));
-					Iterator<Node> it2 = db.findNodes(Label.label(entry.getSecondData().toString()));
-					it.next().createRelationshipTo(it2.next(), RelationshipType.withName("-"));
+					Node it = db.findNode(Label.label("ALL"), "name", entries.get(first).getData().toString());
+					Node it2 = db.findNode(Label.label("ALL"), "name", entries.get(second).getData().toString());
+					it.createRelationshipTo(it2, RelationshipType.withName("-"));
 					
-					if(it.hasNext() || it2.hasNext()) {
-						System.out.println("more than 1 matching labels found at gengrah(), should never happen");
-						continue;
-					}
+					
 					
 				} else {
 				//create new node and set no. of koins as property for each entries
-				Node node = db.createNode(Label.label(entry.getData().toString()));
+				Node node = db.createNode(Label.label("ALL"));
 				//TODO change the label to be the data, right now it is displaying the no of koins
 				node.setProperty("index", entry.getIndex());
+				node.setProperty("name", entry.getData().toString());
+				
 				
 					if (entry.getMiner() == null) {
 						//not a PoW node, carry on.......
