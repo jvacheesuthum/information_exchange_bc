@@ -41,7 +41,7 @@ public class HistoryEntry implements Serializable {
 		this.c = Command.MINED;
 		this.pubkey = pub;
 		this.d = new Data(hashcashStamp);
-		this.signature = genSigForMine(priv);
+		this.signature = generateSig(priv);
 	}
 	
 	//for relationships in neo4j - links a with b
@@ -57,7 +57,9 @@ public class HistoryEntry implements Serializable {
 			dsa = Signature.getInstance("SHA1withDSA", "SUN");
 			dsa.initSign(priv);
 			String s;
-			if (d == null) {
+			if (this.c == Command.MINED) {
+				s = this.c + this.d.toString();
+			} else if (d == null) {
 				s = this.c.toString() + this.ref + this.koins; 
 			} else {
 				s = this.c + this.d.toString() +this.ref + this.koins; 
@@ -72,22 +74,7 @@ public class HistoryEntry implements Serializable {
         return null;
 	}
 	
-	private byte[] genSigForMine(PrivateKey priv) {
-		Signature dsa;
-		try {
-			dsa = Signature.getInstance("SHA1withDSA", "SUN");
-			dsa.initSign(priv);
-			String s = this.c + this.d.toString();
-			byte[] toSign = s.getBytes(); //convert this command into bytes to be signed
-			dsa.update(toSign);
-			return dsa.sign();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        return null;
-		
-	}
+	
 	public Command getCommand(){
 		return c;
 	}
