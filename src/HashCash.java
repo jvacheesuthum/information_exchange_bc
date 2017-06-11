@@ -12,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.PublicKey; 
 
 /**
@@ -490,7 +491,7 @@ private static long bytesToLong(byte[] b) {
 	//function that executes and mint hashcashes in order to accumulate koins for users
 	//returns the new current no of koins
     //pass historybc in to add the proof of mining
-	public static int mineKoins(String string, int currentKoins, int koinsToBeMined, HistoryBC blockchain, PublicKey pub) throws NoSuchAlgorithmException {
+	public static int mineKoins(String string, int currentKoins, int koinsToBeMined, HistoryBC blockchain, PublicKey pub, PrivateKey priv) throws NoSuchAlgorithmException {
 		int level = 4;
 		for (int i = 0; i < koinsToBeMined && level < 27; i++) { //if level is ~30 it takes too long for testing purposes
 			HashCash h = HashCash.mintCash(string, level);
@@ -498,7 +499,7 @@ private static long bytesToLong(byte[] b) {
 			if (i % 3 == 0) level ++; 
 			currentKoins++;
 			//add to history blockchain
-			blockchain.add(new HistoryEntry(pub, h.toString()));
+			blockchain.add(new HistoryEntry(pub, h.toString(), priv));
 			System.out.println(currentKoins + "at level " + level + " STAMP= " + h);
 		}
 		return currentKoins;

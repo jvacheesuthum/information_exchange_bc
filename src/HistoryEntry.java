@@ -37,10 +37,11 @@ public class HistoryEntry implements Serializable {
 	}
 	
 	//proof of mining (for every 1 koin hence there's no no of koins
-	public HistoryEntry(PublicKey pub, String hashcashStamp) {
+	public HistoryEntry(PublicKey pub, String hashcashStamp, PrivateKey priv) {
 		this.c = Command.MINED;
 		this.pubkey = pub;
 		this.d = new Data(hashcashStamp);
+		this.signature = genSigForMine(priv);
 	}
 	
 	//for relationships in neo4j - links a with b
@@ -69,6 +70,23 @@ public class HistoryEntry implements Serializable {
 			e.printStackTrace();
 		}
         return null;
+	}
+	
+	private byte[] genSigForMine(PrivateKey priv) {
+		Signature dsa;
+		try {
+			dsa = Signature.getInstance("SHA1withDSA", "SUN");
+			dsa.initSign(priv);
+			String s = this.c + this.d.toString();
+			byte[] toSign = s.getBytes(); //convert this command into bytes to be signed
+			dsa.update(toSign);
+			return dsa.sign();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        return null;
+		
 	}
 	public Command getCommand(){
 		return c;

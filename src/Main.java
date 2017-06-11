@@ -19,11 +19,19 @@ import org.eclipse.rdf4j.rio.Rio;
 
 public class Main {
 
+	/**
+	 * for simulation purposes user can give up to 4 args when starting the program in command line
+	 * @param args  0 : computer ID = id of simulation (int)
+	 * 				1 : locator file = gives the location of all the nodes (if any) or 1 location of the main server
+	 * 				2 : IP (optional) = fake ip address of this simulation		
+	 * 				3 : Port no. (optional)
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		
 
 
-			//priv pub keygen ---------------------------------------------------------------------------------
+			//private public key pair generation ----------------------------------------------------------
 
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
@@ -90,7 +98,7 @@ public class Main {
 					if (s.startsWith("mine")) {
 						
 						int toMine = Integer.parseInt(s.replaceFirst("mine", "").trim());
-						currentKoins = HashCash.mineKoins("teststring", currentKoins, toMine, blockchain, pub);
+						currentKoins = HashCash.mineKoins("teststring", currentKoins, toMine, blockchain, pub, priv);
 						
 
 					} else if (s.startsWith("RDF")) { //-----------------------------------------------------------------------
