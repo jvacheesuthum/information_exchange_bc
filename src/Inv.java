@@ -1,5 +1,10 @@
+import java.io.Serializable;
 
-public class Inv {
+public class  Inv implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private byte[] pubkey;
 	private byte[] sig;
 	private int koins;

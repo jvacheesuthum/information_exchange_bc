@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -6,7 +7,11 @@ import java.util.List;
 
 
 //TODO main doesnt need sig, maybe publickey instead
-public class MainBlockEntry {
+public class MainBlockEntry implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String pubkey; //for mining PoW only
 	private Data data;
 	private Data secondData; //for relationships only
@@ -53,7 +58,7 @@ public class MainBlockEntry {
 			} else if (k > koins) { 		//removing only some investments
 				totalKoins -= koins;
 				investments.get(index).setKoins(k - koins);
-			} else { 						//command asks to remove more tha invested, fail
+			} else { 						//command asks to remove more than invested, ignore
 				System.out.println("User has invested only " + k + " koins in this block");
 			}
 		} else {

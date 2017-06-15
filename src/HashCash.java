@@ -488,28 +488,43 @@ private static long bytesToLong(byte[] b) {
  * ---------------------DEFINED FUNCTIONS FOR MINING AND TESTING------------------------------
  -------------------------------------------------------------------------------------------------*/
   
-	//function that executes and mint hashcashes in order to accumulate koins for users
+	//function that executes and mint hashcash in order to accumulate koins for users
 	//returns the new current no of koins
     //pass historybc in to add the proof of mining
-	public static int mineKoins(String string, int currentKoins, int koinsToBeMined, HistoryBC blockchain, PublicKey pub, PrivateKey priv) throws NoSuchAlgorithmException {
-		int level = 4;
-		for (int i = 0; i < koinsToBeMined && level < 27; i++) { //if level is ~30 it takes too long for testing purposes
-			HashCash h = HashCash.mintCash(string, level);
-			//increase the level every x koins mined to slowdown process
-			if (i % 3 == 0) level ++; 
-			currentKoins++;
-			//add to history blockchain
-			blockchain.add(new HistoryEntry(pub, h.toString(), priv));
-			System.out.println(currentKoins + "at level " + level + " STAMP= " + h);
-		}
+	public static int mineKoins(String string, int currentKoins, HistoryBC blockchain, PublicKey pub, PrivateKey priv) throws NoSuchAlgorithmException {
+		int level = 12;
+		HashCash h = HashCash.mintCash(string, level);
+		currentKoins++;
+		//add to history blockchain
+		blockchain.add(new HistoryEntry(pub, h.toString(), priv));
+		System.out.println(currentKoins + "at level " + level + " STAMP= " + h);
 		return currentKoins;
 	}
 	
-	/**use for testing the speed - param is the no of koins we want to mine
-	public void testMining(int mine) throws NoSuchAlgorithmException {
+	//function that executes and mint hashcash in order to accumulate koins for users
+		//returns the new current no of koins
+	    //pass historybc in to add the proof of mining
+  
+  		//performance test for hashcash
+		public static void mineKoins(String string) throws NoSuchAlgorithmException {
+			int avg = 0;
+			int level =23;
+			for(int i =0; i < 10; i++) {
+				Stopwatch st = Stopwatch.createStarted();
+				HashCash h = HashCash.mintCash(string, level);
+				st.stop();
+				System.out.println("millisec: " + st.elapsed(TimeUnit.MILLISECONDS));
+				avg += st.elapsed(TimeUnit.MILLISECONDS);
+			}
+			System.out.println("avg = " + avg/10);
+			return;
+		}
+	
+	//use for testing the speed - param is the no of koins we want to mine
+	/*public void testMining(int mine) throws NoSuchAlgorithmException {
 		int koins = 0;
 		Stopwatch st = Stopwatch.createStarted();
-		koins = mineKoins("teststring",koins, mine);
+		koins = mineKoins("teststring",koins, mine, null, null, null); //cannot be null change later
 		st.stop();
 		System.out.println("mining " + koins + " koins took millisec: " + st.elapsed(TimeUnit.MILLISECONDS));
 	}*/

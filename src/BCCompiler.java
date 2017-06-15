@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import java.util.Date;
@@ -24,7 +27,7 @@ public class BCCompiler {
 	}
 
 	// takes a history blockchain and compile into main blockchain
-	public void compile(HistoryBC history) {
+	public void compile(HistoryBC history) throws Exception {
 		MainBlockEntry.resetCounter();
 		List<HistoryEntry> h = history.getList();
 		for (HistoryEntry e : h) {
@@ -39,7 +42,7 @@ public class BCCompiler {
 				compileAdd(e);
 				break;
 			case MINED:
-				entries.add(new MainBlockEntry(e.getPubkey(), e.getData()));
+				addMine(e);
 				break;
 			case LINK:
 				addLink(e);
@@ -49,13 +52,21 @@ public class BCCompiler {
 			}
 		}
 		last_update = new Date();
+		
+		FileOutputStream f = new FileOutputStream(new File("mainblocks.txt"));
+		ObjectOutputStream o = new ObjectOutputStream(f);
+		o.writeObject(entries);
+		o.close();
+		f.close();
 	}
 
 	//add relationship-block into the main block to generate relationship when genGraph()
 	private void addLink(HistoryEntry e) {
 		entries.add(new MainBlockEntry(e.getData(), e.getSecondData()));
-		
-		
+	}
+	
+	private void addMine(HistoryEntry e){
+		entries.add(new MainBlockEntry(e.getPubkey(), e.getData()));
 	}
 
 	private void compileAdd(HistoryEntry e) {
@@ -130,7 +141,7 @@ public class BCCompiler {
 			for (MainBlockEntry entry : entries) {
 				if (entry.getSecondData() != null) {
 					
-					//relationship entries -> add
+					//relationship entries case
 					
 					int first = search(entry.getData());
 					int second = search(entry.getSecondData());
@@ -149,7 +160,6 @@ public class BCCompiler {
 				} else {
 				//create new node and set no. of koins as property for each entries
 				Node node = db.createNode(Label.label("ALL"));
-				//TODO change the label to be the data, right now it is displaying the no of koins
 				node.setProperty("index", entry.getIndex());
 				node.setProperty("name", entry.getData().toString());
 				

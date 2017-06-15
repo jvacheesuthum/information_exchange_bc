@@ -71,7 +71,7 @@ public class Main {
 				System.out.println("Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
 				System.out.println("OR 'compile' to compile AND 'graph' after compiling to build a graph");
 				System.out.println("OR type 'RDF' follow by a spcae and filename to upload an ontology ");
-				System.out.println("OR 'mine [int]' to mine koins");
+				System.out.println("OR 'mine' to mine koins");
 
 				String s = scanner.nextLine();
 				
@@ -97,8 +97,7 @@ public class Main {
 				default:   //-------------------------------------------------------------------------------
 					if (s.startsWith("mine")) {
 						
-						int toMine = Integer.parseInt(s.replaceFirst("mine", "").trim());
-						currentKoins = HashCash.mineKoins("teststring", currentKoins, toMine, blockchain, pub, priv);
+						currentKoins = HashCash.mineKoins("teststring", currentKoins, blockchain, pub, priv);
 						
 
 					} else if (s.startsWith("RDF")) { //-----------------------------------------------------------------------
@@ -110,7 +109,7 @@ public class Main {
 						Model model = Rio.parse(input, "", RDFFormat.RDFXML);
 						for (Statement v : model) {
 							//TODO need to change these to URIs?
-							// adding all subj - predicate - obj into the blockchain
+							// adding all subject - predicate - object into the blockchain
 							 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " 1", priv, pub));
 							 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getPredicate()) + " 1", priv,pub));
 							 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getObject()) + " 1", priv, pub));
@@ -145,7 +144,12 @@ public class Main {
 		return s.substring(s.lastIndexOf('#') + 1);
 	}
 
-	// method to verify signature, move to other class later??
+	// method to verify signature
+	/*
+	 * params:  signature - signature to be verified
+	 * 			data - details of transaction which produced this signature (the signed data)
+	 * 			pubKey - public key of the user who produced this signature
+	 */
 	public boolean verifySig(byte[] signature, byte[] data, PublicKey pubKey) {
 		try {
 			Signature sig = Signature.getInstance("SHA1withDSA", "SUN");

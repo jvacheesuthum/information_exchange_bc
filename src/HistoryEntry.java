@@ -52,19 +52,32 @@ public class HistoryEntry implements Serializable {
 	}
 	
 	private byte[] generateSig(PrivateKey priv) {
+		
 		Signature dsa;
+		
 		try {
 			dsa = Signature.getInstance("SHA1withDSA", "SUN");
+			
+			//initialise with user's private key
 			dsa.initSign(priv);
 			String s;
+			
 			if (this.c == Command.MINED) {
+				//case for proof of work
 				s = this.c + this.d.toString();
 			} else if (d == null) {
+				//case for signing and removing where users specify 
+				//index of data instead of the data itself
 				s = this.c.toString() + this.ref + this.koins; 
 			} else {
+				//regular data entry
 				s = this.c + this.d.toString() +this.ref + this.koins; 
 			}
-			byte[] toSign = s.getBytes(); //convert this command into bytes to be signed
+			
+			 //convert into bytes to be signed
+			byte[] toSign = s.getBytes();
+			
+			//produce a digital signature with respect to the details of the transaction
 			dsa.update(toSign);
 			return dsa.sign();
 

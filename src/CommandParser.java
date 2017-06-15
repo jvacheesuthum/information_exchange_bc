@@ -6,7 +6,6 @@ public class CommandParser {
 	// parse a String input and return HistoryEntry object accordingly
 	public static HistoryEntry parse(String s, PrivateKey priv, PublicKey pub) { 
 		String[] split = s.split(" ");
-		for (int i=0;i<split.length;i++) {System.out.println(split[i]);}
 		switch(split[0]) {
 		case "ADD": return parseAdd(split, priv, pub);
 		case "SIGN": return parseSignRemv(Command.SIGN, split, priv, pub);
@@ -30,7 +29,6 @@ public class CommandParser {
 	}
 
 
-	//3+ split: ADD [array of (ref) and/or (string)] [koins]
 	private static HistoryEntry parseAdd(String[] split, PrivateKey priv, PublicKey pub) {
 		int koin = -1;
 		Data d = null;
