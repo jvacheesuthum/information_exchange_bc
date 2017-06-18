@@ -11,11 +11,14 @@ import java.security.SecureRandom;
 import java.security.Signature;
 import java.util.Base64;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
+
+import com.google.common.base.Stopwatch;
 
 public class Main {
 
@@ -94,6 +97,32 @@ public class Main {
 					com.showState();
 					break;
 					
+				case "test": //---------- for performance test
+					Stopwatch st = Stopwatch.createStarted();
+
+					FileInputStream input2 = new FileInputStream("wine.rdf");
+
+					Model model2 = Rio.parse(input2, "", RDFFormat.RDFXML);
+					
+					/*for(int i = 0; i < model2.size()*3; i++) {
+						currentKoins = HashCash.mineKoins("teststring", currentKoins, blockchain, pub, priv);
+
+					}/
+					System.out.println("current koins = " + currentKoins);*/
+					for (Statement v : model2) {
+						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " 1", priv, pub));
+						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getPredicate()) + " 1", priv,pub));
+						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getObject()) + " 1", priv, pub));
+
+						 blockchain.add(new HistoryEntry(getResourceName(v.getSubject()), getResourceName(v.getPredicate())));
+						 blockchain.add(new HistoryEntry(getResourceName(v.getPredicate()), getResourceName(v.getObject())));
+
+					}
+					st.stop();
+					input2.close();
+					System.out.println("time " + st.elapsed(TimeUnit.MILLISECONDS));
+					break;
+					
 				default:   //-------------------------------------------------------------------------------
 					if (s.startsWith("mine")) {
 						
@@ -104,7 +133,7 @@ public class Main {
 						// read an ontology in RDFXML format and invests 1 in each
 
 						String filename = s.replaceFirst("RDF", "").trim();
-						FileInputStream input = new FileInputStream(filename);
+						FileInputStream input = new FileInputStream("example_ontologies/" + filename);
 
 						Model model = Rio.parse(input, "", RDFFormat.RDFXML);
 						for (Statement v : model) {
@@ -119,7 +148,7 @@ public class Main {
 							 blockchain.add(new HistoryEntry(getResourceName(v.getPredicate()), getResourceName(v.getObject())));
 
 						}
-
+						input.close();
 					} else {   // single regular command case -------------------------------------
 							blockchain.add(CommandParser.parse(s, priv, pub));
 

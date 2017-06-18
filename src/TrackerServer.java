@@ -19,9 +19,10 @@ public class TrackerServer {
             System.exit(1);
         }
  
-        int portNumber = Integer.parseInt(args[0]);
 		FileOutputStream out = new FileOutputStream("nodeaddresses.txt");
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out)); 
+		
+		int portNumber = Integer.parseInt(args[0]);
 		ServerSocket serverSocket = new ServerSocket(portNumber);
 		Socket clientSocket = serverSocket.accept();
         
@@ -64,6 +65,7 @@ public class TrackerServer {
         	if (writer != null) writer.close();
         	if (out != null) out.close();
         	serverSocket.close();
+        	clientSocket.close();
         }
         
 	}

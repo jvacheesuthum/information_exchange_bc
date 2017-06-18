@@ -1,0 +1,828 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns="http://www.co-ode.org/ontologies/pizza/pizza_20041007.owl#"
+    xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xml:base="http://www.co-ode.org/ontologies/pizza/pizza_20041007.owl">
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://protege.stanford.edu/plugins/owl/protege"/>
+  </owl:Ontology>
+  <owl:Class rdf:ID="SauceTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="VegetableTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="NutTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="PizzaTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="FishTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="FruitTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="DairyTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="MeatTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="HerbSpiceTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="PrawnsTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="AnchoviesTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="MixedSeafoodTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FishTopping"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="SweetPepperTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="GreenPepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="PeperonataTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="JalapenoPepperTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="PepperTopping"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#NutTopping">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#PizzaTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#SauceTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#VegetableTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#HerbSpiceTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#DairyTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FishTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FruitTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#HerbSpiceTopping">
+    <owl:disjointWith rdf:resource="#NutTopping"/>
+    <owl:disjointWith rdf:resource="#SauceTopping"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#PizzaTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FruitTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#DairyTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#VegetableTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FishTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="GorgonzolaTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="FourCheesesTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="MozzarellaTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="CheeseTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="ParmesanTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="GoatsCheeseTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#GreenPepperTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#JalapenoPepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SweetPepperTopping"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PeperonataTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#DairyTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#VegetableTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FishTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#HerbSpiceTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FruitTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#NutTopping"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#PizzaTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#SauceTopping"/>
+  </owl:Class>
+  <owl:Class rdf:ID="TobascoPepperSauce">
+    <rdfs:subClassOf rdf:resource="#SauceTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#FourCheesesTopping">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#CheeseTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#GorgonzolaTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#ParmesanTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GoatsCheeseTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MozzarellaTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="DeepPan">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="ThinAndCrispy"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="PizzaBase"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#ParmesanTopping">
+    <owl:disjointWith rdf:resource="#GorgonzolaTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GoatsCheeseTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#CheeseTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#FourCheesesTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MozzarellaTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="SundriedTomatoTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SlicedTomatoTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="TomatoTopping"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ChickenTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="PeperoniSausageTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="HamTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="HotSpicedBeefTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#VegetableTopping">
+    <owl:disjointWith rdf:resource="#DairyTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FishTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#NutTopping"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#PizzaTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#SauceTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FruitTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#HerbSpiceTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#TomatoTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="AsparagusTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="PetitPoisTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="MushroomTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="CaperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="LeekTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="ArtichokeTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="RocketTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="OnionTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="OliveTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="NamedPizza">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="RealItalianPizza"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Pizza"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#PeperonataTopping">
+    <owl:disjointWith rdf:resource="#GreenPepperTopping"/>
+    <owl:disjointWith rdf:resource="#SweetPepperTopping"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#JalapenoPepperTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#LeekTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RocketTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#ArtichokeTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OnionTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PetitPoisTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#AsparagusTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MushroomTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="SultanaTopping">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FruitTopping"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="DomainConcept"/>
+  <owl:Class rdf:about="#MushroomTopping">
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PetitPoisTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RocketTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#AsparagusTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#ArtichokeTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OnionTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#ArtichokeTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OnionTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PetitPoisTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#AsparagusTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#RocketTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#JalapenoPepperTopping">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#PeperonataTopping"/>
+    <owl:disjointWith rdf:resource="#SweetPepperTopping"/>
+    <owl:disjointWith rdf:resource="#GreenPepperTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#CheeseTopping">
+    <rdfs:subClassOf rdf:resource="#DairyTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="EggTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#GoatsCheeseTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MozzarellaTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#ParmesanTopping"/>
+    <owl:disjointWith rdf:resource="#FourCheesesTopping"/>
+    <rdfs:subClassOf rdf:resource="#CheeseTopping"/>
+    <owl:disjointWith rdf:resource="#GorgonzolaTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Pizza">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PizzaBase"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasBase"/>
+        </owl:onProperty>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#PizzaBase"/>
+        </owl:someValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#PizzaTopping"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasTopping"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PizzaTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#DomainConcept"/>
+  </owl:Class>
+  <owl:Class rdf:ID="MargheritaPizza">
+    <rdfs:subClassOf rdf:resource="#NamedPizza"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#TomatoTopping"/>
+        <owl:onProperty rdf:resource="#hasTopping"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasTopping"/>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#MozzarellaTopping"/>
+        </owl:someValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#PizzaTopping">
+    <rdfs:subClassOf rdf:resource="#DomainConcept"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PizzaBase"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Pizza"/>
+  </owl:Class>
+  <owl:Class rdf:about="#PizzaBase">
+    <owl:disjointWith rdf:resource="#PizzaTopping"/>
+    <owl:disjointWith rdf:resource="#Pizza"/>
+    <rdfs:subClassOf rdf:resource="#DomainConcept"/>
+  </owl:Class>
+  <owl:Class rdf:about="#RocketTopping">
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PetitPoisTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#AsparagusTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OnionTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#AsparagusTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PetitPoisTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OnionTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PepperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#RealItalianPizza">
+    <owl:disjointWith rdf:resource="#NamedPizza"/>
+    <rdfs:subClassOf rdf:resource="#Pizza"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="#hasBase"/>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#ThinAndCrispy"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="CajunSpiceTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="RosemaryTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#HerbSpiceTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#PepperTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#AsparagusTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OnionTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PetitPoisTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#PeperoniSausageTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#HamTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#ChickenTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#HotSpicedBeefTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#FruitTopping">
+    <owl:disjointWith rdf:resource="#HerbSpiceTopping"/>
+    <rdfs:subClassOf rdf:resource="#PizzaTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FishTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SauceTopping"/>
+    <owl:disjointWith rdf:resource="#DairyTopping"/>
+    <owl:disjointWith rdf:resource="#NutTopping"/>
+    <owl:disjointWith rdf:resource="#VegetableTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#AnchoviesTopping">
+    <owl:disjointWith rdf:resource="#PrawnsTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MixedSeafoodTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FishTopping"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#SlicedTomatoTopping">
+    <rdfs:subClassOf rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith rdf:resource="#SundriedTomatoTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#ThinAndCrispy">
+    <owl:disjointWith rdf:resource="#DeepPan"/>
+    <rdfs:subClassOf rdf:resource="#PizzaBase"/>
+  </owl:Class>
+  <owl:Class rdf:about="#HamTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#HotSpicedBeefTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#MeatTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#ChickenTopping"/>
+    <owl:disjointWith rdf:resource="#PeperoniSausageTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#EggTopping">
+    <rdfs:subClassOf rdf:resource="#DairyTopping"/>
+    <owl:disjointWith rdf:resource="#CheeseTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#MixedSeafoodTopping">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FishTopping"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#AnchoviesTopping"/>
+    <owl:disjointWith rdf:resource="#PrawnsTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#MeatTopping">
+    <owl:disjointWith rdf:resource="#SauceTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#FishTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#DairyTopping"/>
+    <owl:disjointWith rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#FruitTopping"/>
+    <owl:disjointWith rdf:resource="#HerbSpiceTopping"/>
+    <rdfs:subClassOf rdf:resource="#PizzaTopping"/>
+    <owl:disjointWith rdf:resource="#NutTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#FishTopping">
+    <owl:disjointWith rdf:resource="#NutTopping"/>
+    <owl:disjointWith rdf:resource="#DairyTopping"/>
+    <owl:disjointWith rdf:resource="#SauceTopping"/>
+    <owl:disjointWith rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#MeatTopping"/>
+    <owl:disjointWith rdf:resource="#FruitTopping"/>
+    <owl:disjointWith rdf:resource="#HerbSpiceTopping"/>
+    <rdfs:subClassOf rdf:resource="#PizzaTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#OnionTopping">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#AsparagusTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#PepperTopping"/>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#PetitPoisTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#PetitPoisTopping">
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#OnionTopping"/>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith rdf:resource="#PepperTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#OliveTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#AsparagusTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#OliveTopping">
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith rdf:resource="#OnionTopping"/>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#GarlicTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith rdf:resource="#PepperTopping"/>
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#AsparagusTopping"/>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+    <owl:disjointWith rdf:resource="#PetitPoisTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#GarlicTopping">
+    <owl:disjointWith rdf:resource="#PepperTopping"/>
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+    <owl:disjointWith rdf:resource="#AsparagusTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CaperTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#OnionTopping"/>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith rdf:resource="#OliveTopping"/>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith rdf:resource="#PetitPoisTopping"/>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+  </owl:Class>
+  <owl:Class rdf:ID="HotGreenPepperTopping">
+    <rdfs:subClassOf rdf:resource="#GreenPepperTopping"/>
+  </owl:Class>
+  <owl:Class rdf:ID="PineKernels">
+    <rdfs:subClassOf rdf:resource="#NutTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#HotSpicedBeefTopping">
+    <owl:disjointWith rdf:resource="#ChickenTopping"/>
+    <owl:disjointWith rdf:resource="#PeperoniSausageTopping"/>
+    <owl:disjointWith rdf:resource="#HamTopping"/>
+    <rdfs:subClassOf rdf:resource="#MeatTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#CaperTopping">
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+    <owl:disjointWith rdf:resource="#PetitPoisTopping"/>
+    <owl:disjointWith rdf:resource="#AsparagusTopping"/>
+    <owl:disjointWith rdf:resource="#PepperTopping"/>
+    <owl:disjointWith rdf:resource="#GarlicTopping"/>
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith rdf:resource="#OliveTopping"/>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <owl:disjointWith rdf:resource="#OnionTopping"/>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SpinachTopping"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="RedOnionTopping">
+    <rdfs:subClassOf rdf:resource="#OnionTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#RosemaryTopping">
+    <rdfs:subClassOf rdf:resource="#HerbSpiceTopping"/>
+    <owl:disjointWith rdf:resource="#CajunSpiceTopping"/>
+  </owl:Class>
+  <owl:Class rdf:ID="ParmaHamTopping">
+    <rdfs:subClassOf rdf:resource="#HamTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#MozzarellaTopping">
+    <rdfs:subClassOf rdf:resource="#CheeseTopping"/>
+    <owl:disjointWith rdf:resource="#GoatsCheeseTopping"/>
+    <owl:disjointWith rdf:resource="#FourCheesesTopping"/>
+    <owl:disjointWith rdf:resource="#GorgonzolaTopping"/>
+    <owl:disjointWith rdf:resource="#ParmesanTopping"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SpinachTopping">
+    <owl:disjointWith rdf:resource="#OliveTopping"/>
+    <owl:disjointWith rdf:resource="#LeekTopping"/>
+    <rdfs:subClassOf rdf:resource="#VegetableTopping"/>
+    <owl:disjointWith rdf:resource="#ArtichokeTopping"/>
+    <owl:disjointWith rdf:resource="#PetitPoisTopping"/>
+    <owl:disjointWith rdf:resource="#AsparagusTopping"/>
+    <owl:disjointWith rdf:resource="#CaperTopping"/>
+    <owl:disjointWith rdf:resource="#PepperTopping"/>
+    <owl:disjointWith rdf:resource="#TomatoTopping"/>
+    <owl:disjointWith rdf:resource="#RocketTopping"/>
+    <owl:disjointWith rdf:resource="#MushroomTopping"/>
+    <owl:disjointWith rdf:resource="#GarlicTopping"/>
+    <owl:disjointWith rdf:resource="#OnionTopping"/>
+  </owl:Class>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 1.3, Build 211)  http://protege.stanford.edu -->

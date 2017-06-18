@@ -166,7 +166,7 @@ public class BCCompiler {
 				
 					if (entry.getMiner() == null) {
 						//not a PoW node, carry on.......
-						node.setProperty("total Koins invested", entry.getTotalKoins());
+						node.setProperty("total_Koins_invested", entry.getTotalKoins());
 						
 						//turn investments into array of string which is an allowed type of property
 						List<Inv> invs = (List<Inv>) entry.getInvestments();

@@ -492,7 +492,7 @@ private static long bytesToLong(byte[] b) {
 	//returns the new current no of koins
     //pass historybc in to add the proof of mining
 	public static int mineKoins(String string, int currentKoins, HistoryBC blockchain, PublicKey pub, PrivateKey priv) throws NoSuchAlgorithmException {
-		int level = 12;
+		int level = 23;
 		HashCash h = HashCash.mintCash(string, level);
 		currentKoins++;
 		//add to history blockchain
