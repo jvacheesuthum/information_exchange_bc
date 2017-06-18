@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 public class tester {
 
@@ -79,8 +80,9 @@ public class tester {
 	}*/
 	 public static void main(String[] args) throws Exception {
 
-	        startServer();
-	        startSender();
+		 System.out.println(new Date().getTime());
+	        //startServer();
+	       // startSender();
 	    }
 
 	    public static void startSender() {

@@ -1,15 +1,23 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
-import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +58,8 @@ public class Main {
 			
 			HistoryBC blockchain;
 			BCCompiler com = new BCCompiler();
+			Broadcaster broadcast = new Broadcaster();
+			int update_index = 0; //index of latest block loaded, so anything after this index must be broadcasted to the network
 
 			int currentKoins = 0;
 			boolean compiled = false;
@@ -64,11 +74,17 @@ public class Main {
 					ObjectInputStream oi = new ObjectInputStream(fi);
 	
 					blockchain = (HistoryBC) oi.readObject();
+					update_index = blockchain.size();
+					oi.close();
 			} else {
 				blockchain = HistoryBC.getInstance();
 			}
 			
+			//run server and update current state of the blockchain ------------------------------------
+			NodeServer serv = new NodeServer();
+			serv.execute();
 
+			blockchain.fecthUpdate();
 			//--------------------------------------------------------------------------------------------
 			do {
 				System.out.println("Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
@@ -89,12 +105,30 @@ public class Main {
 					// put the compiled MainBlocks into neo4j nodes
 					com.genGraph();
 					System.out.println("successfully generated graph for neo4j");
+					scanner.close();
 					return;
 					
 				case "compile": //---------------------------------------------------------------------------
 					compiled = true;
 					com.compile(blockchain);
-					com.showState();
+					
+					//broadcast change to peers--------------------------------------------------------
+					int additions = blockchain.size() - update_index;
+					if (additions > 0) {
+						//sublist containing new entries
+						List<HistoryEntry> updates = blockchain.getList().subList(update_index, blockchain.size() - 1);
+						
+						//serialize into file to be sent
+						String filename = "new_transactions.txt";
+						FileOutputStream f = new FileOutputStream(new File(filename));
+						ObjectOutputStream o = new ObjectOutputStream(f);
+						o.writeObject(updates);
+						o.close();
+						f.close();
+						
+						//send with broadcaster
+						broadcast.send(filename);
+					}
 					break;
 					
 				case "test": //---------- for performance test
@@ -166,6 +200,9 @@ public class Main {
 			} while(true);
 		
 	}
+	
+	
+	
 
 	// extract resource name form URI after #
 	public static String getResourceName(Object o) {
