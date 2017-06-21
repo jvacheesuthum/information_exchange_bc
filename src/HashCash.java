@@ -513,7 +513,7 @@ private static long bytesToLong(byte[] b) {
 				Stopwatch st = Stopwatch.createStarted();
 				HashCash h = HashCash.mintCash(string, level);
 				st.stop();
-				System.out.println("millisec: " + st.elapsed(TimeUnit.MILLISECONDS));
+				System.out.println(h.toString() + "millisec: " + st.elapsed(TimeUnit.MILLISECONDS));
 				avg += st.elapsed(TimeUnit.MILLISECONDS);
 			}
 			System.out.println("avg = " + avg/10);

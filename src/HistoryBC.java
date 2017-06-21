@@ -4,6 +4,7 @@ import java.io.FilenameFilter;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HistoryBC implements Serializable {
@@ -11,10 +12,13 @@ public class HistoryBC implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<HistoryEntry> entries;
 	private static int count = 0;
+	//use for recording when the node goes offline -> Date.getTime()
+	//when it comes online again it will reuest any updates happended form this time until the present
+	private Date session_ended; 
 	
 	private HistoryBC() { 
 		entries = new ArrayList<HistoryEntry>();
-		//do we need a genesis block here?
+		session_ended = new Date();
 	}
 	
 	public static HistoryBC getInstance() { //use to limit only 1 instance of the history blockchain
@@ -48,6 +52,7 @@ public class HistoryBC implements Serializable {
 				fi = new FileInputStream(f);
 				oi = new ObjectInputStream(fi);
 	
+				@SuppressWarnings("unchecked")
 				List<HistoryEntry> transactions = (List<HistoryEntry>) oi.readObject();
 				entries.addAll(transactions);
 				
@@ -63,11 +68,7 @@ public class HistoryBC implements Serializable {
 					e.printStackTrace();
 				}
 			}
-			
-			
 		}
-		
-		
 	}
 	
 	
@@ -86,5 +87,9 @@ public class HistoryBC implements Serializable {
 
 	public int size() {
 		return	entries.size();	
+	}
+	
+	public void endSession(){
+		session_ended = new Date();
 	}
 }

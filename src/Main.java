@@ -1,22 +1,14 @@
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -95,7 +87,10 @@ public class Main {
 				String s = scanner.nextLine();
 				
 				switch(s) {
-				
+				case "end" : //-----end the session and go offline
+					serv.end();
+					blockchain.endSession();
+					return;
 				case "graph": //---------------------------------------------------------------------------
 					if (!compiled) {
 						System.out.println("please compile first");
@@ -112,7 +107,7 @@ public class Main {
 					compiled = true;
 					com.compile(blockchain);
 					
-					//broadcast change to peers--------------------------------------------------------
+					//broadcast change to peers--------------------------------------------------------TODO
 					int additions = blockchain.size() - update_index;
 					if (additions > 0) {
 						//sublist containing new entries
@@ -213,7 +208,7 @@ public class Main {
 	// method to verify signature
 	/*
 	 * params:  signature - signature to be verified
-	 * 			data - details of transaction which produced this signature (the signed data)
+	 * 			data - details of transaction which produced this signature 
 	 * 			pubKey - public key of the user who produced this signature
 	 */
 	public boolean verifySig(byte[] signature, byte[] data, PublicKey pubKey) {
