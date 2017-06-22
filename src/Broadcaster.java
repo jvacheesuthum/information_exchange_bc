@@ -1,8 +1,15 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Broadcaster {
@@ -10,7 +17,49 @@ public class Broadcaster {
 	List<String> peers;   //list of peers address
 	
 	public Broadcaster() {
-		
+		//get peer list from nodeaddresses.txt
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader("nodeaddresses.txt"));
+			this.peers = new ArrayList<String>();
+	
+			String line;
+			
+			while((line = reader.readLine()) != null) {
+			    peers.add(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (reader != null) reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	public void updatePeers() {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader("nodeaddresses.txt"));
+			this.peers = new ArrayList<String>();
+	
+			String line;
+			
+			while((line = reader.readLine()) != null) {
+			    peers.add(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (reader != null) reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	//send updates.txt in directory to others
@@ -20,7 +69,7 @@ public class Broadcaster {
 			String[] address = p.split(":"); 
 			
 			Socket socket = null;
-            String host = address[0];
+            String host = address[0];//TODO maybe hardcode this port for requesting update only?
             int port = Integer.parseInt(address[1]);
             InputStream in = null;
             OutputStream out = null;
@@ -62,4 +111,51 @@ public class Broadcaster {
             }
 		}
 	}
+	
+	//request updates from peer when user comes online again
+	public void request(long session_ended){
+		for (String p : peers) {
+			String[] address = p.split(":"); 
+			
+			Socket socket = null;
+            String host = address[0];
+            int port = Integer.parseInt(address[1]); //TODO hardcode port?
+            InputStream in = null;
+            OutputStream out = null;
+            
+            try {
+            	socket = new Socket(host, port);
+            	
+            	//Send the time of last session to other nodes
+                OutputStream os = socket.getOutputStream();
+                OutputStreamWriter osw = new OutputStreamWriter(os);
+                BufferedWriter bw = new BufferedWriter(osw);
+          
+                String sendMessage = session_ended + "\n";
+                bw.write(sendMessage);
+                bw.flush();
+                
+                //receive files
+            	in = socket.getInputStream();
+                out = new FileOutputStream("update?.txt"); //TODO need some way to sort in chrono order
+                byte[] bytes = new byte[16*1024];
+
+                int count;
+                while ((count = in.read(bytes)) > 0) {
+                    out.write(bytes, 0, count);
+                }
+            } catch (Exception e) {
+            	e.printStackTrace();
+            } finally {
+            	try {
+			        if (out != null) out.close();
+			        if (in != null) in.close();
+			        if (socket != null) socket.close();
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+            }
+		}
+	}
+
 }

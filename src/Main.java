@@ -9,7 +9,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +32,6 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-
 
 			//private public key pair generation ----------------------------------------------------------
 
@@ -76,6 +75,8 @@ public class Main {
 			NodeServer serv = new NodeServer();
 			serv.execute();
 
+			try{
+			//broadcast.request(blockchain.getLastSession().getTime());  //get updates this user hasn't received while offline
 			blockchain.fecthUpdate();
 			//--------------------------------------------------------------------------------------------
 			do {
@@ -89,7 +90,15 @@ public class Main {
 				switch(s) {
 				case "end" : //-----end the session and go offline
 					serv.end();
-					blockchain.endSession();
+					blockchain.endSession(); //records the time for ending in the serialised file as well!!!!
+					
+					//save history blockchain into disk using serializable
+					FileOutputStream fi = new FileOutputStream(new File("history.txt"));
+					ObjectOutputStream oi = new ObjectOutputStream(fi);
+					oi.writeObject(blockchain);
+					oi.close();
+					fi.close();
+					
 					return;
 				case "graph": //---------------------------------------------------------------------------
 					if (!compiled) {
@@ -101,6 +110,7 @@ public class Main {
 					com.genGraph();
 					System.out.println("successfully generated graph for neo4j");
 					scanner.close();
+					serv.end();
 					return;
 					
 				case "compile": //---------------------------------------------------------------------------
@@ -111,7 +121,7 @@ public class Main {
 					int additions = blockchain.size() - update_index;
 					if (additions > 0) {
 						//sublist containing new entries
-						List<HistoryEntry> updates = blockchain.getList().subList(update_index, blockchain.size() - 1);
+						ArrayList<HistoryEntry> updates = new ArrayList<HistoryEntry>(blockchain.getList().subList(update_index, blockchain.size() - 1));
 						
 						//serialize into file to be sent
 						String filename = "new_transactions.txt";
@@ -194,6 +204,11 @@ public class Main {
 
 			} while(true);
 		
+} catch (Exception e) {
+	e.printStackTrace();
+} finally {
+	serv.end();
+}
 	}
 	
 	

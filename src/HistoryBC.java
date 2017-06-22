@@ -92,4 +92,8 @@ public class HistoryBC implements Serializable {
 	public void endSession(){
 		session_ended = new Date();
 	}
+
+	public Date getLastSession() {
+		return session_ended;
+	}
 }

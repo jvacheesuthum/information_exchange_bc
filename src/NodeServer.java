@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Date;
 
 public class NodeServer {
@@ -32,7 +31,7 @@ public class NodeServer {
         		
         	        
         		try {
-					updateServerSocket = new ServerSocket(51411);
+					updateServerSocket = new ServerSocket(29277);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					System.exit(MAX_PRIORITY);
@@ -83,7 +82,7 @@ public class NodeServer {
         		serverSocket = null;
         		
         		try {
-					serverSocket = new ServerSocket(50271);
+					serverSocket = new ServerSocket(23818);
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -93,7 +92,7 @@ public class NodeServer {
         	        while(!terminated) {
         	        	try {
         			        socket = serverSocket.accept();
-        			        String IP = socket.getInetAddress().toString() + socket.getPort();
+        			        String IP = socket.getInetAddress().toString() + ":" + socket.getPort();
         			        File file = new File("history.txt");
         			      
         			        // Get the size of the file

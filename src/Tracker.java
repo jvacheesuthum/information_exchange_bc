@@ -23,7 +23,7 @@ public class Tracker {
 	        	try {
 	        
 			        socket = serverSocket.accept();
-			        String IP = socket.getInetAddress().toString() + socket.getPort();
+			        String IP = socket.getInetAddress().toString() + ":" + socket.getPort();
 			        File file = new File("nodeaddresses.txt");
 			      
 			        // Get the size of the file
