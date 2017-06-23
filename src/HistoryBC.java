@@ -4,6 +4,7 @@ import java.io.FilenameFilter;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -43,11 +44,14 @@ public class HistoryBC implements Serializable {
 		    }
 		});
 		
+		Arrays.sort(files);
+		
 		//de-serialize and add append each one
 		FileInputStream fi = null;
 		ObjectInputStream oi = null;
 		
 		for (File f : files) {
+			System.out.println("updating with " + f.getName());
 			try {
 				fi = new FileInputStream(f);
 				oi = new ObjectInputStream(fi);
@@ -96,4 +100,6 @@ public class HistoryBC implements Serializable {
 	public Date getLastSession() {
 		return session_ended;
 	}
+	
+	
 }

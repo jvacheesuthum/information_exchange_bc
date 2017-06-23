@@ -80,8 +80,12 @@ public class tester {
 	}*/
 	 public static void main(String[] args) throws Exception {
 
-		 System.out.println(new Date().getTime());
+		 File f = new File("nodeaddr.txt");
+		 System.out.println("srsly");
+		 System.out.println(f.exists() + f.getAbsolutePath() + f.setReadable(true));
 	        //startServer();
+		 System.out.println("Working Directory = " +
+	              System.getProperty("user.dir"));
 	       // startSender();
 	    }
 

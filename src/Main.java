@@ -31,7 +31,6 @@ public class Main {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		
 
 			//private public key pair generation ----------------------------------------------------------
 
@@ -50,24 +49,23 @@ public class Main {
 			HistoryBC blockchain;
 			BCCompiler com = new BCCompiler();
 			Broadcaster broadcast = new Broadcaster();
+			Scanner scanner = new Scanner(System.in);
 			int update_index = 0; //index of latest block loaded, so anything after this index must be broadcasted to the network
 
 			int currentKoins = 0;
 			boolean compiled = false;
 			
-			Scanner scanner = new Scanner(System.in);
-			System.out.println("Do you want to load the previous history blockchain? type y if yes");
-			String readBC = scanner.nextLine();
 			
-			
-			if (readBC.equals("y")) {
-					FileInputStream fi = new FileInputStream(new File("history.txt"));
+			File hist = new File("history.txt");
+			if (hist.exists()) {
+					FileInputStream fi = new FileInputStream(hist);
 					ObjectInputStream oi = new ObjectInputStream(fi);
 	
 					blockchain = (HistoryBC) oi.readObject();
 					update_index = blockchain.size();
 					oi.close();
 			} else {
+				System.out.println("no local blockchain found");
 				blockchain = HistoryBC.getInstance();
 			}
 			
@@ -116,6 +114,7 @@ public class Main {
 				case "compile": //---------------------------------------------------------------------------
 					compiled = true;
 					com.compile(blockchain);
+					com.showState();
 					
 					//broadcast change to peers--------------------------------------------------------TODO
 					int additions = blockchain.size() - update_index;
@@ -124,15 +123,17 @@ public class Main {
 						ArrayList<HistoryEntry> updates = new ArrayList<HistoryEntry>(blockchain.getList().subList(update_index, blockchain.size() - 1));
 						
 						//serialize into file to be sent
-						String filename = "new_transactions.txt";
-						FileOutputStream f = new FileOutputStream(new File(filename));
-						ObjectOutputStream o = new ObjectOutputStream(f);
-						o.writeObject(updates);
-						o.close();
-						f.close();
-						
-						//send with broadcaster
-						broadcast.send(filename);
+						if (updates.size() > 0) {
+							String filename = "new_transactions.txt";
+							FileOutputStream f = new FileOutputStream(new File(filename));
+							ObjectOutputStream o = new ObjectOutputStream(f);
+							o.writeObject(updates);
+							o.close();
+							f.close();
+							
+							//send with broadcaster
+							broadcast.send(filename);
+						}
 					}
 					break;
 					
@@ -189,7 +190,12 @@ public class Main {
 						}
 						input.close();
 					} else {   // single regular command case -------------------------------------
+						try {	
 							blockchain.add(CommandParser.parse(s, priv, pub));
+							System.out.println(blockchain);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
 					}
 				}

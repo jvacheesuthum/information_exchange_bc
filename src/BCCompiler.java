@@ -16,17 +16,24 @@ public class BCCompiler {
 
 	private List<MainBlockEntry> entries;
 	private Date last_update; // last compilation
+	private int current_index; //for recompiling
 
 	public BCCompiler() {
 		// TODO this assumes we only compile once -- not sure????
 		entries = new ArrayList<MainBlockEntry>();
+		current_index = 0;
 	}
 
 	// takes a history blockchain and compile into main blockchain
 	public void compile(HistoryBC history) throws Exception {
 		MainBlockEntry.resetCounter();
 		List<HistoryEntry> h = history.getList();
-		for (HistoryEntry e : h) {
+		if (current_index >= h.size()) {
+			System.out.println("no new input to compile");
+			return;
+		}
+		List<HistoryEntry> sub_h = h.subList(current_index, h.size());
+		for (HistoryEntry e : sub_h) {
 			switch (e.getCommand()) {
 			case REMV:
 				compileSignRemv(e);
@@ -47,6 +54,7 @@ public class BCCompiler {
 				System.out.println("at compile() getcommand cannot retrieve command");
 			}
 		}
+		current_index = h.size();
 		last_update = new Date();
 		
 		FileOutputStream f = new FileOutputStream(new File("mainblocks.txt"));

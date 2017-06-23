@@ -20,7 +20,8 @@ public class Broadcaster {
 		//get peer list from nodeaddresses.txt
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader("nodeaddresses.txt"));
+			File f = new File("nodeaddr.txt");
+			reader = new BufferedReader(new FileReader(f));
 			this.peers = new ArrayList<String>();
 	
 			String line;

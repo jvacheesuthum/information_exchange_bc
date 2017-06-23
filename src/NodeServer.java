@@ -24,6 +24,7 @@ public class NodeServer {
 		this.updateServer = (new Thread() {
             @Override
             public void run() {
+            	System.out.println("uodateserver started");
             	updateServerSocket = null;
         		Socket socket = null;
         		OutputStream out = null;
@@ -31,41 +32,40 @@ public class NodeServer {
         		
         	        
         		try {
-					updateServerSocket = new ServerSocket(29277);
+					updateServerSocket = new ServerSocket(11111);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					System.exit(MAX_PRIORITY);
 				}
 
-        	    while(!terminated) {
-        	      	try {
-
-        		        socket = updateServerSocket.accept();
-        			        
-        		        //save received update into file in chronological order
-        		        in = socket.getInputStream();
-        		        out = new FileOutputStream(new Date().getTime() + "updates.txt");
-		                byte[] bytes = new byte[16*1024];
-
-		                int count;
-
-		                while ((count = in.read(bytes)) > 0) {
-		                    out.write(bytes, 0, count);
-		                }
-		                
-		                
-                	} catch (Exception e) {
-       	        		e.printStackTrace();
-       	        	} finally {
-       	        		try {
-    				        if (out != null) out.close();
-    				        if (in != null) in.close();
-    				        if (socket != null) socket.close();
-    				        if (updateServerSocket != null) updateServerSocket.close();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-       	        	}
+        		try {
+	        	    while(!terminated) {
+	        	      		System.out.println(updateServerSocket.isClosed());
+	        		        socket = updateServerSocket.accept();
+	        			        
+	        		        //save received update into file in chronological order
+	        		        in = socket.getInputStream();
+	        		        out = new FileOutputStream(new Date().getTime() + "updates.txt");
+			                byte[] bytes = new byte[16*1024];
+	
+			                int count;
+	
+			                while ((count = in.read(bytes)) > 0) {
+			                    out.write(bytes, 0, count);
+			                }
+			                
+	       	        }
+        		} catch (Exception e) {
+        			e.printStackTrace();
+        		} finally {
+        			try {
+        				if (out != null) out.close();
+        				if (in != null) in.close();
+        				if (socket != null) socket.close();
+        				if (updateServerSocket != null) updateServerSocket.close();
+        			} catch (Exception e) {
+        				e.printStackTrace();
+        			}
        	        }
             }
 		});
@@ -75,6 +75,8 @@ public class NodeServer {
 
 			@Override
             public void run() {
+            	System.out.println("welcomeserver started");
+
         		Socket socket = null;
         		OutputStream out = null;
         		InputStream in = null;
@@ -82,7 +84,7 @@ public class NodeServer {
         		serverSocket = null;
         		
         		try {
-					serverSocket = new ServerSocket(23818);
+					serverSocket = new ServerSocket(11112);
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
