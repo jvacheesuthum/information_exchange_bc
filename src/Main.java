@@ -120,7 +120,7 @@ public class Main {
 					int additions = blockchain.size() - update_index;
 					if (additions > 0) {
 						//sublist containing new entries
-						ArrayList<HistoryEntry> updates = new ArrayList<HistoryEntry>(blockchain.getList().subList(update_index, blockchain.size() - 1));
+						ArrayList<HistoryEntry> updates = new ArrayList<HistoryEntry>(blockchain.getList().subList(update_index, blockchain.size()));
 						
 						//serialize into file to be sent
 						if (updates.size() > 0) {

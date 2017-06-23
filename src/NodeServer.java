@@ -32,7 +32,7 @@ public class NodeServer {
         		
         	        
         		try {
-					updateServerSocket = new ServerSocket(11111);
+					updateServerSocket = new ServerSocket(11411);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					System.exit(MAX_PRIORITY);
@@ -84,7 +84,7 @@ public class NodeServer {
         		serverSocket = null;
         		
         		try {
-					serverSocket = new ServerSocket(11112);
+					serverSocket = new ServerSocket(11412);
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
