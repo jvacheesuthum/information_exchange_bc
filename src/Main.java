@@ -75,9 +75,9 @@ public class Main {
 
 			try{
 			//broadcast.request(blockchain.getLastSession().getTime());  //get updates this user hasn't received while offline
-			blockchain.fecthUpdate();
 			//--------------------------------------------------------------------------------------------
 			do {
+				blockchain.fecthUpdate();
 				System.out.println("Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
 				System.out.println("OR 'compile' to compile AND 'graph' after compiling to build a graph");
 				System.out.println("OR type 'RDF' follow by a spcae and filename to upload an ontology ");
@@ -190,12 +190,8 @@ public class Main {
 						}
 						input.close();
 					} else {   // single regular command case -------------------------------------
-						try {	
 							blockchain.add(CommandParser.parse(s, priv, pub));
 							System.out.println(blockchain);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
 
 					}
 				}
@@ -213,6 +209,7 @@ public class Main {
 } catch (Exception e) {
 	e.printStackTrace();
 } finally {
+	System.out.println("endserver called in main");
 	serv.end();
 }
 	}

@@ -36,6 +36,7 @@ public class CommandParser {
 			koin = Integer.parseInt(split[split.length-1].trim());
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("invalid amount of koins - higher than integer MAX");
 		}
 		
 		if(split.length > 3) {
