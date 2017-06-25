@@ -19,7 +19,7 @@ public class BCCompiler {
 	private int current_index; //for recompiling
 
 	public BCCompiler() {
-		// TODO this assumes we only compile once -- not sure????
+		// TODO this assumes we only compile once, change
 		entries = new ArrayList<MainBlockEntry>();
 		current_index = 0;
 	}

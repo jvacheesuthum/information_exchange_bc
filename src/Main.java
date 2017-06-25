@@ -11,14 +11,11 @@ import java.security.SecureRandom;
 import java.security.Signature;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
-
-import com.google.common.base.Stopwatch;
 
 public class Main {
 
@@ -54,6 +51,7 @@ public class Main {
 
 			int currentKoins = 0;
 			boolean compiled = false;
+			boolean mustCompile = false; //if there is an addition, must compile first before fetching updates
 			
 			
 			File hist = new File("history.txt");
@@ -70,18 +68,24 @@ public class Main {
 			}
 			
 			//run server and update current state of the blockchain ------------------------------------
-			NodeServer serv = new NodeServer();
+			NodeServer serv = new NodeServer(broadcast);
 			serv.execute();
 
 			try{
 			//broadcast.request(blockchain.getLastSession().getTime());  //get updates this user hasn't received while offline
 			//--------------------------------------------------------------------------------------------
 			do {
-				blockchain.fecthUpdate();
-				System.out.println("Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
+				if(!mustCompile) {
+					blockchain.fecthUpdate();
+					update_index = blockchain.size();
+				} else {
+					System.out.println("you must compile first to fetch any updates available");
+				}
+
+				System.out.println('\n' + "Enter command in the following format: '[ADD/SIGN/REMV] [String[] or String] [int index] [int koins]' ");
 				System.out.println("OR 'compile' to compile AND 'graph' after compiling to build a graph");
 				System.out.println("OR type 'RDF' follow by a spcae and filename to upload an ontology ");
-				System.out.println("OR 'mine' to mine koins");
+				System.out.println("OR 'mine' to mine koins" +'\n');
 
 				String s = scanner.nextLine();
 				
@@ -113,10 +117,11 @@ public class Main {
 					
 				case "compile": //---------------------------------------------------------------------------
 					compiled = true;
+					mustCompile = false;
 					com.compile(blockchain);
-					com.showState();
+					//com.showState();
 					
-					//broadcast change to peers--------------------------------------------------------TODO
+					//broadcast change to peers--------------------------------------------------------
 					int additions = blockchain.size() - update_index;
 					if (additions > 0) {
 						//sublist containing new entries
@@ -137,47 +142,21 @@ public class Main {
 					}
 					break;
 					
-				case "test": //---------- for performance test
-					Stopwatch st = Stopwatch.createStarted();
-
-					FileInputStream input2 = new FileInputStream("wine.rdf");
-
-					Model model2 = Rio.parse(input2, "", RDFFormat.RDFXML);
-					
-					/*for(int i = 0; i < model2.size()*3; i++) {
-						currentKoins = HashCash.mineKoins("teststring", currentKoins, blockchain, pub, priv);
-
-					}/
-					System.out.println("current koins = " + currentKoins);*/
-					for (Statement v : model2) {
-						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " 1", priv, pub));
-						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getPredicate()) + " 1", priv,pub));
-						 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getObject()) + " 1", priv, pub));
-
-						 blockchain.add(new HistoryEntry(getResourceName(v.getSubject()), getResourceName(v.getPredicate())));
-						 blockchain.add(new HistoryEntry(getResourceName(v.getPredicate()), getResourceName(v.getObject())));
-
-					}
-					st.stop();
-					input2.close();
-					System.out.println("time " + st.elapsed(TimeUnit.MILLISECONDS));
-					break;
-					
+				
 				default:   //-------------------------------------------------------------------------------
 					if (s.startsWith("mine")) {
-						
+						mustCompile = true;
 						currentKoins = HashCash.mineKoins("teststring", currentKoins, blockchain, pub, priv);
 						
 
 					} else if (s.startsWith("RDF")) { //-----------------------------------------------------------------------
 						// read an ontology in RDFXML format and invests 1 in each
-
+						mustCompile = true;
 						String filename = s.replaceFirst("RDF", "").trim();
 						FileInputStream input = new FileInputStream("example_ontologies/" + filename);
 
 						Model model = Rio.parse(input, "", RDFFormat.RDFXML);
 						for (Statement v : model) {
-							//TODO need to change these to URIs?
 							// adding all subject - predicate - object into the blockchain
 							 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getSubject()) + " 1", priv, pub));
 							 blockchain.add(CommandParser.parse("ADD " + getResourceName(v.getPredicate()) + " 1", priv,pub));
@@ -190,8 +169,12 @@ public class Main {
 						}
 						input.close();
 					} else {   // single regular command case -------------------------------------
+						try {
 							blockchain.add(CommandParser.parse(s, priv, pub));
-							System.out.println(blockchain);
+							mustCompile = true;
+						} catch (Exception e) {
+							System.out.println("invalid command");
+						}
 
 					}
 				}
@@ -209,8 +192,9 @@ public class Main {
 } catch (Exception e) {
 	e.printStackTrace();
 } finally {
-	System.out.println("endserver called in main");
+	System.out.println("closing all ports..");
 	serv.end();
+	System.out.println("Done");
 }
 	}
 	

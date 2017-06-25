@@ -8,7 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +45,10 @@ public class Broadcaster {
 
 	}
 	
-	public void updatePeers() {
+	private void updatePeers() {
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader("nodeaddresses.txt"));
+			reader = new BufferedReader(new FileReader("nodeaddr.txt"));
 			this.peers = new ArrayList<String>();
 	
 			String line;
@@ -65,18 +69,17 @@ public class Broadcaster {
 
 	//send updates.txt in directory to others
 	public void send(String filename) {
+		updatePeers();
 		for (String p : peers) {
-			//[0] = IP and [1] = port number
-			String[] address = p.split(":"); 
 			
+			if(isMyIP(p)) continue;
 			Socket socket = null;
-            String host = address[0];//TODO maybe hardcode this port for requesting update only?
-            int port = Integer.parseInt(address[1]);
+            int port = 8845;
             InputStream in = null;
             OutputStream out = null;
             
             try {
-                socket = new Socket(host, port);
+                socket = new Socket(p, port);
 
                 File file = new File(filename);
 			      
@@ -91,7 +94,6 @@ public class Broadcaster {
 		        
 		        in = new FileInputStream(file);
 		        out = socket.getOutputStream();
-		
 		        int count;
 		        
 		        while ((count = in.read(bytes)) > 0) {
@@ -115,17 +117,16 @@ public class Broadcaster {
 	
 	//request updates from peer when user comes online again
 	public void request(long session_ended){
+		updatePeers();
 		for (String p : peers) {
-			String[] address = p.split(":"); 
 			
 			Socket socket = null;
-            String host = address[0];
-            int port = Integer.parseInt(address[1]); //TODO hardcode port?
+            int port = 11111; //TODO hardcode port?
             InputStream in = null;
             OutputStream out = null;
             
             try {
-            	socket = new Socket(host, port);
+            	socket = new Socket(p, port);
             	
             	//Send the time of last session to other nodes
                 OutputStream os = socket.getOutputStream();
@@ -157,6 +158,55 @@ public class Broadcaster {
             	}
             }
 		}
+	}
+	
+	//advertise new peer to the known peer
+	public void advNewPeer(String ip) {
+		updatePeers();
+		for (String p : peers) {
+			
+			if (p.trim() == ip.trim() || isMyIP(p)) continue;
+			Socket socket = null;
+            int port = 8847;
+            OutputStream out = null;
+            
+            try {
+                socket = new Socket(p, port);
+		        out = socket.getOutputStream();
+		        out.write(ip.getBytes());
+                
+            } catch (Exception e) {
+            	e.printStackTrace();
+            } finally {
+            	try {
+			        if (out != null) out.close();
+			        if (socket != null) socket.close();
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+            }
+		}
+	}
+	
+	public static boolean isMyIP(String ip) {
+		System.out.println(ip);
+		InetAddress addr = null;
+		try {
+			addr = InetAddress.getByName(ip);
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    // Check if the address is a valid special local or loop back
+	    if (addr.isAnyLocalAddress() || addr.isLoopbackAddress())
+	        return true;
+
+	    // Check if the address is defined on any interface
+	    try {
+	        return NetworkInterface.getByInetAddress(addr) != null;
+	    } catch (SocketException e) {
+	        return false;
+	    }
 	}
 
 }

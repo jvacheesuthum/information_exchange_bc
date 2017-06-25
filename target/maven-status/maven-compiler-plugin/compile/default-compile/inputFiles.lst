@@ -2,7 +2,6 @@
 /Users/nop/Documents/workspace/historyblockchain/src/NodeServer.java
 /Users/nop/Documents/workspace/historyblockchain/src/Inv.java
 /Users/nop/Documents/workspace/historyblockchain/src/MainBlockEntry.java
-/Users/nop/Documents/workspace/historyblockchain/src/TrackerServer.java
 /Users/nop/Documents/workspace/historyblockchain/src/Tracker.java
 /Users/nop/Documents/workspace/historyblockchain/src/HistoryBC.java
 /Users/nop/Documents/workspace/historyblockchain/src/Main.java
@@ -14,3 +13,4 @@
 /Users/nop/Documents/workspace/historyblockchain/src/CommandParser.java
 /Users/nop/Documents/workspace/historyblockchain/src/HashCash.java
 /Users/nop/Documents/workspace/historyblockchain/src/Broadcaster.java
+/Users/nop/Documents/workspace/historyblockchain/src/InitRequest.java

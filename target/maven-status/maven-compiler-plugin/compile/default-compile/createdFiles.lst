@@ -1,9 +1,8 @@
+InitRequest.class
 NodeServer$2.class
-TrackerServer.class
 historyblockchain/testing.class
 tester$1.class
 NodeServer$1.class
-Tracker.class
 HistoryBC$1.class
 MainBlockEntry.class
 Command.class
@@ -18,5 +17,6 @@ tester.class
 Inv.class
 BCCompiler$1.class
 HistoryEntry.class
+NodeServer$3.class
 HashCash.class
 BCCompiler.class
